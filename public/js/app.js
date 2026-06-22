@@ -135,7 +135,7 @@
       // Simulate send (no backend mailer on free plan – uses mailto fallback)
       const subject  = contactForm.querySelector('[name="subject"]').value.trim() || 'Message from website';
       const body     = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-      const mailtoUrl = `mailto:andrepython@zju.edu.cn?subject=${encodeURIComponent(subject)}&body=${body}`;
+      const mailtoUrl = `mailto:python.andre@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
       window.location.href = mailtoUrl;
 
       formStatus.textContent = '✓ Opening your email client…';
