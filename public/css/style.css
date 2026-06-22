@@ -1,0 +1,82 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#020812;
+    color:white;
+    font-family:Inter,sans-serif;
+    overflow-x:hidden;
+}
+
+#ocean{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+}
+
+#mapContainer{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0.25;
+    z-index:-1;
+}
+
+#projection{
+    max-height:90vh;
+    object-fit:contain;
+}
+
+nav{
+    position:fixed;
+    top:20px;
+    right:30px;
+    z-index:50;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+#hero{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+#hero h1{
+    font-size:5rem;
+}
+
+#hero p{
+    margin-top:20px;
+    opacity:0.8;
+}
+
+.continent{
+    min-height:100vh;
+    padding:100px;
+}
+
+.continent h2{
+    font-size:3rem;
+    margin-bottom:30px;
+}
+
+.card{
+    backdrop-filter:blur(15px);
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.1);
+    padding:30px;
+    margin:20px 0;
+    border-radius:20px;
+}
