@@ -1,111 +1,498 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Andre Python</title>
-
-<link rel="icon" href="/favicon.ico">    
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="André Python – Swiss academic researcher in applied spatial statistics, based at Zhejiang University." />
+  <meta property="og:title" content="André Python" />
+  <meta property="og:description" content="Applied spatial statistics · epidemiology · conflict analysis" />
+  <meta property="og:type" content="website" />
+  <title>André Python</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
+  <!-- ══════════════════════════════════════════
+       BACKGROUND CANVAS – Fuller projection map + particles
+  ══════════════════════════════════════════ -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-<canvas id="ocean"></canvas>
-
-<div id="ui">
-  <div id="title">Continent Panel</div>
-  <div id="tabs"></div>
-</div>
-
-    
-
-<div id="mapContainer">
-    <img src="image/worldprojection.jpg" id="projection">
-</div>
-
-<nav>
-    <a href="#about">About</a>
-    <a href="#research">Research</a>
-    <a href="#teaching">Teaching</a>
-    <a href="#contact">Contact</a>
-</nav>
-
-<section id="hero">
-    <h1>Andre Python</h1>
-    <p>Spatial Statistics • Geospatial Epidemiology • Bayesian Modelling</p>
-</section>
-
-<section id="about" class="continent">
-    <h2>About</h2>
-
-    <p>
-        Swiss academic researcher working between China and the UK.
-        Research focuses on applied spatial statistics and geographic
-        patterns associated with global phenomena.
-    </p>
-
-    <p>
-        Current position:
-        ZJU100 Young Professor of Statistics,
-        Center for Data Science,
-        Zhejiang University.
-    </p>
-</section>
-
-<section id="research" class="continent">
-    <h2>Research</h2>
-
-    <div class="card">
-        <h3>Spatial Epidemiology</h3>
-        <p>
-            Global malaria risk mapping and disease modelling.
-        </p>
+  <!-- ══════════════════════════════════════════
+       NAVIGATION
+  ══════════════════════════════════════════ -->
+  <header id="site-header">
+    <div class="header-inner">
+      <div class="site-title">
+        <span class="title-ap">André Python</span>
+        <span class="title-sub">Spatial Statistics · Epidemiology · Conflict</span>
+      </div>
+      <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="main-nav" role="navigation" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="#welcome"   class="nav-link active" data-tab="welcome">Welcome</a></li>
+          <li><a href="#news"      class="nav-link" data-tab="news">News</a></li>
+          <li class="has-sub">
+            <a href="#research"  class="nav-link" data-tab="research">Research <span class="arrow">▾</span></a>
+            <ul class="sub-nav">
+              <li><a href="#obesity"   data-tab="obesity">Obesity in Children</a></li>
+              <li><a href="#data"      data-tab="data">Publications &amp; Data</a></li>
+              <li><a href="#covid"     data-tab="covid">COVID-19</a></li>
+              <li><a href="#shufa"     data-tab="shufa">AI &amp; Calligraphy</a></li>
+              <li><a href="#terrorism" data-tab="terrorism">Terrorism &amp; Conflict</a></li>
+            </ul>
+          </li>
+          <li><a href="#teaching"  class="nav-link" data-tab="teaching">Teaching</a></li>
+          <li><a href="#blog"      class="nav-link" data-tab="blog">Blog</a></li>
+          <li class="has-sub">
+            <a href="#about"     class="nav-link" data-tab="about">About <span class="arrow">▾</span></a>
+            <ul class="sub-nav">
+              <li><a href="#bio"    data-tab="bio">About Me</a></li>
+              <li><a href="#collab" data-tab="collab">Collaboration</a></li>
+              <li><a href="#cv"     data-tab="cv">Curriculum Vitae</a></li>
+              <li><a href="#contact" data-tab="contact">Contact</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
     </div>
+  </header>
 
-    <div class="card">
-        <h3>Conflict Analytics</h3>
-        <p>
-            Bayesian spatio-temporal models for armed conflict.
-        </p>
-    </div>
+  <!-- ══════════════════════════════════════════
+       GLOBE TRAVEL HINT
+  ══════════════════════════════════════════ -->
+  <div id="globe-hint" aria-live="polite">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    <span>Click a continent to explore</span>
+  </div>
 
-    <div class="card">
-        <h3>Geostatistics</h3>
-        <p>
-            Modern Bayesian methods for large-scale spatial data.
-        </p>
-    </div>
-</section>
+  <!-- ══════════════════════════════════════════
+       CONTENT PANELS
+  ══════════════════════════════════════════ -->
+  <main id="content-wrap">
 
-<section id="teaching" class="continent">
-    <h2>Teaching</h2>
+    <!-- WELCOME -->
+    <section id="tab-welcome" class="tab-panel active" data-continent="europe">
+      <div class="panel-inner">
+        <h1>Welcome</h1>
+        <p class="lead">I am a Swiss academic researcher working at the intersection of statistics, geography, and public health. Currently based at the Center of Data Science, Zhejiang University (China), I investigate spatial patterns associated with natural and social phenomena.</p>
+        <p>My work focuses on phenomena that affect large communities globally — from infectious diseases to armed conflict. I believe in the power of evidence-based analysis to inform decision makers and policy.</p>
+        <p>If you are passionate about spatial data or want to discuss a problem you encounter in spatial analysis, feel free to <a href="#contact" class="inline-link" data-tab="contact">contact me</a>.</p>
+        <div class="highlight-cards">
+          <div class="hcard" data-tab="research">
+            <div class="hcard-icon">🗺️</div>
+            <h3>Research</h3>
+            <p>Spatial epidemiology, conflict modelling, machine learning</p>
+          </div>
+          <div class="hcard" data-tab="teaching">
+            <div class="hcard-icon">📚</div>
+            <h3>Teaching</h3>
+            <p>Statistics and spatial analysis courses</p>
+          </div>
+          <div class="hcard" data-tab="blog">
+            <div class="hcard-icon">✍️</div>
+            <h3>Blog</h3>
+            <p>Practical spatial data tutorials</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="card">
-        Fundamentals of Data Science
-    </div>
+    <!-- NEWS -->
+    <section id="tab-news" class="tab-panel" data-continent="europe">
+      <div class="panel-inner">
+        <h1>News</h1>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="tdate">2024</span>
+            <div class="tcard">
+              <h3>ZJU100 Young Professor</h3>
+              <p>Appointed as ZJU100 Young Professor at the Center of Data Science, Zhejiang University, China.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="tdate">2018–2020</span>
+            <div class="tcard">
+              <h3>Postdoc at Oxford</h3>
+              <p>Postdoctoral research scientist in geospatial epidemiology at the Malaria Atlas Project, Big Data Institute, University of Oxford.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="tdate">2017</span>
+            <div class="tcard">
+              <h3>PhD Completed</h3>
+              <p>PhD in Statistics, University of St Andrews (UK). Thesis: Bayesian spatio-temporal geostatistical modelling of non-state terrorism worldwide.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="card">
-        Geospatial Modelling with R-INLA
-    </div>
+    <!-- RESEARCH (landing) -->
+    <section id="tab-research" class="tab-panel" data-continent="africa">
+      <div class="panel-inner">
+        <h1>Research</h1>
+        <p class="lead">My research applies statistical and machine-learning methods to assess, in space and time, the risk of global threats such as contagious diseases and armed conflict.</p>
+        <div class="research-grid">
+          <div class="rcard" data-tab="obesity">
+            <div class="rcard-icon">🍎</div>
+            <h3>Obesity in Children</h3>
+            <p>Spatial modelling of childhood obesity prevalence and risk factors.</p>
+          </div>
+          <div class="rcard" data-tab="data">
+            <div class="rcard-icon">📊</div>
+            <h3>Publications &amp; Data</h3>
+            <p>Peer-reviewed papers, datasets, and reproducible code.</p>
+          </div>
+          <div class="rcard" data-tab="covid">
+            <div class="rcard-icon">🦠</div>
+            <h3>COVID-19 Research</h3>
+            <p>Spatio-temporal analysis of COVID-19 spread and risk.</p>
+          </div>
+          <div class="rcard" data-tab="shufa">
+            <div class="rcard-icon">🖌️</div>
+            <h3>AI &amp; Chinese Calligraphy</h3>
+            <p>Deep learning for style recognition in traditional Shufa.</p>
+          </div>
+          <div class="rcard" data-tab="terrorism">
+            <div class="rcard-icon">🌍</div>
+            <h3>Terrorism &amp; Conflict</h3>
+            <p>Geostatistical modelling, ISIS attacks, conflict in Africa.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="card">
-        Bayesian Statistics
-    </div>
-</section>
+    <!-- OBESITY -->
+    <section id="tab-obesity" class="tab-panel" data-continent="asia">
+      <div class="panel-inner">
+        <h1>Obesity in Children</h1>
+        <p class="lead">Childhood obesity is a growing global health concern with strong spatial heterogeneity. This project applies Bayesian spatial models to understand where risk is highest and what drives the geographic patterns.</p>
+        <p>Using large-scale survey data, we model the prevalence of overweight and obesity among children under five, capturing fine-scale geographic variation and its association with socio-economic, environmental, and demographic factors.</p>
+        <div class="tags"><span>Bayesian modelling</span><span>Epidemiology</span><span>Spatial statistics</span><span>Child health</span></div>
+      </div>
+    </section>
 
-<section id="contact" class="continent">
-    <h2>Contact</h2>
+    <!-- DATA & PUBLICATIONS -->
+    <section id="tab-data" class="tab-panel" data-continent="europe">
+      <div class="panel-inner">
+        <h1>Publications &amp; Data</h1>
+        <p class="lead">Selected peer-reviewed publications, datasets, and reproducible analysis code.</p>
+        <div class="pub-list">
+          <div class="pub-item">
+            <h3>Spatio-temporal modelling of non-state terrorism</h3>
+            <p class="pub-meta">A. Python et al. · PhD Thesis, University of St Andrews, 2017</p>
+            <p>Bayesian geostatistical model to capture fine-scale patterns of non-state terrorism across the world.</p>
+          </div>
+          <div class="pub-item">
+            <h3>Geospatial epidemiology of malaria</h3>
+            <p class="pub-meta">Malaria Atlas Project · University of Oxford, 2018–2020</p>
+            <p>Postdoctoral work on global malaria risk mapping using satellite-derived covariates and Bayesian inference.</p>
+          </div>
+          <div class="pub-item">
+            <h3>COVID-19 spatial risk analysis</h3>
+            <p class="pub-meta">A. Python · Zhejiang University, 2020–2021</p>
+            <p>Spatio-temporal modelling of COVID-19 transmission dynamics at fine geographic scales.</p>
+          </div>
+        </div>
+        <p>Full list available on <a href="https://scholar.google.ch/citations?user=ifCgRGgAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener" class="inline-link">Google Scholar</a> · ORCID: 0000-0001-8094-7226</p>
+      </div>
+    </section>
 
-    <p>Zhejiang University</p>
+    <!-- COVID-19 -->
+    <section id="tab-covid" class="tab-panel" data-continent="asia">
+      <div class="panel-inner">
+        <h1>COVID-19 Research</h1>
+        <p class="lead">Applying spatio-temporal statistical models to understand the geographic dynamics of COVID-19 spread across regions and time.</p>
+        <p>This research combines epidemiological data, mobility indicators, and demographic covariates within a Bayesian modelling framework to estimate risk at fine spatial scales and inform public health responses.</p>
+        <div class="feature-block">
+          <h3>COVID-19 Dashboard</h3>
+          <p>Interactive dashboard tracking spatial and temporal dynamics of COVID-19 cases and risk indicators. Built with R Shiny and integrated geospatial layers.</p>
+          <span class="badge">R Shiny</span>
+          <span class="badge">Leaflet</span>
+          <span class="badge">Bayesian</span>
+        </div>
+        <div class="tags"><span>Epidemiology</span><span>Spatio-temporal</span><span>Dashboard</span><span>R</span></div>
+      </div>
+    </section>
 
-    <p>Center for Data Science</p>
+    <!-- SHUFA -->
+    <section id="tab-shufa" class="tab-panel" data-continent="asia">
+      <div class="panel-inner">
+        <h1>AI &amp; Chinese Calligraphy</h1>
+        <p class="lead">An interdisciplinary project applying deep learning and spatial analysis to the study of Shufa — traditional Chinese calligraphy.</p>
+        <p>Chinese calligraphy (書法, Shufa) carries rich cultural and aesthetic information embedded in stroke patterns, ink density, and spatial structure. We use convolutional neural networks to classify calligraphic styles, study master-student transmission of style, and model the geographic diffusion of distinct schools through history.</p>
+        <div class="feature-block">
+          <h3>Methodology</h3>
+          <p>CNN-based style classification combined with geo-referenced biographical data on historical calligraphers. Spatial analysis reveals how stylistic influence flowed across China's historical landscape.</p>
+        </div>
+        <div class="tags"><span>Deep Learning</span><span>CNN</span><span>Cultural Analytics</span><span>Spatial</span><span>China</span></div>
+      </div>
+    </section>
 
-    <p>python.andre@gmail.com</p>
-</section>
+    <!-- TERRORISM -->
+    <section id="tab-terrorism" class="tab-panel" data-continent="africa">
+      <div class="panel-inner">
+        <h1>Terrorism &amp; Conflict</h1>
+        <p class="lead">Spatial and statistical investigation of armed conflict and terrorism at global and regional scales.</p>
+        <div class="sub-projects">
+          <div class="spj">
+            <h3>🚫 Debunking Seven Terrorism Myths</h3>
+            <p>Using data-driven analysis to challenge common misconceptions about the geography and causes of terrorism.</p>
+          </div>
+          <div class="spj">
+            <h3>🗡️ ISIS Attacks in Syria &amp; Iraq</h3>
+            <p>High-resolution spatio-temporal analysis of ISIS attack patterns across the Syrian and Iraqi conflict zones.</p>
+          </div>
+          <div class="spj">
+            <h3>📐 Terrorism in 3D</h3>
+            <p>Three-dimensional visualisation of attack density surfaces to reveal geographic clustering of terrorist activity.</p>
+          </div>
+          <div class="spj">
+            <h3>🎬 Animated Terrorism</h3>
+            <p>Temporal animation of global terrorism events to visualise the evolution of attack patterns over decades.</p>
+          </div>
+          <div class="spj">
+            <h3>🌐 A Triangulated Earth</h3>
+            <p>Mesh-based global representation for modelling conflict events on the spherical surface of the Earth.</p>
+          </div>
+          <div class="spj">
+            <h3>🌍 Conflict in Africa</h3>
+            <p>Spatial risk modelling of armed conflict events across sub-Saharan Africa.</p>
+          </div>
+          <div class="spj">
+            <h3>🤖 Predicting Terrorism with Machine Learning</h3>
+            <p>Random forests and gradient boosting applied to predict the spatial risk of terrorist attacks.</p>
+          </div>
+        </div>
+        <div class="tags"><span>GDELT</span><span>GTD</span><span>Bayesian</span><span>Machine Learning</span><span>GIS</span></div>
+      </div>
+    </section>
 
-<script src="js/water.js"></script>
+    <!-- TEACHING -->
+    <section id="tab-teaching" class="tab-panel" data-continent="europe">
+      <div class="panel-inner">
+        <h1>Teaching</h1>
+        <p class="lead">I teach courses in statistics, spatial analysis, and data science at Zhejiang University and have contributed to curricula at the University of St Andrews and the University of Oxford.</p>
+        <div class="teaching-list">
+          <div class="tcourse">
+            <h3>Spatial Statistics</h3>
+            <p>Fundamentals of geostatistics, point process models, area data analysis, and Bayesian spatial inference.</p>
+            <span class="badge">Graduate</span>
+          </div>
+          <div class="tcourse">
+            <h3>Applied Data Science</h3>
+            <p>End-to-end data science workflows with R and Python, including visualisation, modelling, and communication of results.</p>
+            <span class="badge">Undergraduate</span>
+          </div>
+          <div class="tcourse">
+            <h3>Geospatial Epidemiology</h3>
+            <p>Disease mapping, risk factor analysis, and spatially explicit epidemiological models for public health decision making.</p>
+            <span class="badge">Graduate</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- BLOG -->
+    <section id="tab-blog" class="tab-panel" data-continent="americas">
+      <div class="panel-inner">
+        <h1>Blog</h1>
+        <p class="lead">Practical tutorials and notes on spatial data analysis in R, covering common challenges and workflows.</p>
+        <div class="blog-grid">
+          <div class="bpost" data-url="https://sites.google.com/view/andrepython/blog/blog-spatial-E1">
+            <span class="bnum">E I</span>
+            <h3>Spatial Data – Episode I</h3>
+            <p>Introduction to spatial data structures in R: reading shapefiles, projections, and basic operations with <code>sf</code> and <code>sp</code>.</p>
+            <a href="https://sites.google.com/view/andrepython/blog/blog-spatial-E1" target="_blank" rel="noopener" class="read-more">Read →</a>
+          </div>
+          <div class="bpost" data-url="https://sites.google.com/view/andrepython/blog/blog-spatial-E2">
+            <span class="bnum">E II</span>
+            <h3>Spatial Data – Episode II</h3>
+            <p>Visualising spatial data with <code>ggplot2</code> and <code>tmap</code>: choropleth maps, point maps, and interactive visualisations.</p>
+            <a href="https://sites.google.com/view/andrepython/blog/blog-spatial-E2" target="_blank" rel="noopener" class="read-more">Read →</a>
+          </div>
+          <div class="bpost" data-url="https://sites.google.com/view/andrepython/blog/blog-spatial-E3">
+            <span class="bnum">E III</span>
+            <h3>Spatial Data – Episode III</h3>
+            <p>Spatial autocorrelation: Moran's I, LISA statistics, and interpreting clustering patterns in areal data.</p>
+            <a href="https://sites.google.com/view/andrepython/blog/blog-spatial-E3" target="_blank" rel="noopener" class="read-more">Read →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT (landing) -->
+    <section id="tab-about" class="tab-panel" data-continent="europe">
+      <div class="panel-inner">
+        <h1>About</h1>
+        <p class="lead">Swiss academic researcher in applied spatial statistics, currently ZJU100 Young Professor at Zhejiang University.</p>
+        <div class="about-grid">
+          <div class="acard" data-tab="bio">About Me</div>
+          <div class="acard" data-tab="collab">Collaboration</div>
+          <div class="acard" data-tab="cv">Curriculum Vitae</div>
+          <div class="acard" data-tab="contact">Contact</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BIO -->
+    <section id="tab-bio" class="tab-panel" data-continent="europe">
+      <div class="panel-inner">
+        <h1>About Me</h1>
+        <div class="bio-layout">
+          <div class="bio-text">
+            <p class="lead">I am a ZJU100 Young Professor at the Center of Data Science, Zhejiang University.</p>
+            <p>My first degree was in Geography at the University of Fribourg, Switzerland. In 2017, I completed a PhD in Statistics at the University of St Andrews (UK), developing a Bayesian spatio-temporal geostatistical model to capture fine-scale patterns of non-state terrorism across the world.</p>
+            <p>From 2018 to 2020, I worked as a postdoctoral research scientist in geospatial epidemiology at the Malaria Atlas Project, Big Data Institute, University of Oxford.</p>
+            <p>My current research interests are in applying statistical models to assess in space and time the risk of global threats such as contagious diseases or armed conflict. In line with the objectives of the Royal Statistical Society, I believe that statistics and data play a key role in society.</p>
+          </div>
+          <div class="bio-links">
+            <h3>Affiliations &amp; Links</h3>
+            <ul>
+              <li><a href="https://person.zju.edu.cn/en/0019102" target="_blank" rel="noopener">Zhejiang University Profile</a></li>
+              <li><a href="http://cds.zju.edu.cn/" target="_blank" rel="noopener">Center of Data Science (ZJU)</a></li>
+              <li><a href="http://www.rss.org.uk" target="_blank" rel="noopener">Royal Statistical Society</a></li>
+              <li><a href="https://www.linkedin.com/in/dr-andr%C3%A9-python-717a062" target="_blank" rel="noopener">LinkedIn</a></li>
+              <li><a href="https://scholar.google.ch/citations?user=ifCgRGgAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener">Google Scholar</a></li>
+              <li>ORCID: <a href="https://orcid.org/0000-0001-8094-7226" target="_blank" rel="noopener">0000-0001-8094-7226</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLABORATION -->
+    <section id="tab-collab" class="tab-panel" data-continent="europe">
+      <div class="panel-inner">
+        <h1>Academic Collaboration</h1>
+        <p class="lead">I welcome collaborations with researchers and institutions working on spatial data, epidemiology, conflict analysis, or related fields.</p>
+        <div class="collab-list">
+          <div class="collab-item">
+            <h3>Zhejiang University</h3>
+            <p>Center of Data Science – current institutional home. Open to student projects and joint grants.</p>
+          </div>
+          <div class="collab-item">
+            <h3>University of Oxford</h3>
+            <p>Ongoing links with the Big Data Institute and the Malaria Atlas Project.</p>
+          </div>
+          <div class="collab-item">
+            <h3>University of St Andrews</h3>
+            <p>Connections to the School of Mathematics &amp; Statistics.</p>
+          </div>
+          <div class="collab-item">
+            <h3>International Partners</h3>
+            <p>Collaborators in public health, conflict research, and machine learning across Europe, Asia, and Africa.</p>
+          </div>
+        </div>
+        <p>To discuss a potential collaboration, please use the <a href="#contact" class="inline-link" data-tab="contact">contact form</a>.</p>
+      </div>
+    </section>
+
+    <!-- CV -->
+    <section id="tab-cv" class="tab-panel" data-continent="europe">
+      <div class="panel-inner">
+        <h1>Curriculum Vitae</h1>
+        <div class="cv-section">
+          <h2>Academic Positions</h2>
+          <div class="cv-entry">
+            <span class="cv-year">2020–present</span>
+            <div>
+              <strong>ZJU100 Young Professor</strong>
+              <p>Center of Data Science, Zhejiang University, Hangzhou, China</p>
+            </div>
+          </div>
+          <div class="cv-entry">
+            <span class="cv-year">2018–2020</span>
+            <div>
+              <strong>Postdoctoral Research Scientist</strong>
+              <p>Malaria Atlas Project, Big Data Institute, University of Oxford, UK</p>
+            </div>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h2>Education</h2>
+          <div class="cv-entry">
+            <span class="cv-year">2017</span>
+            <div>
+              <strong>PhD in Statistics</strong>
+              <p>University of St Andrews, Scotland, UK</p>
+              <p>Thesis: Bayesian spatio-temporal geostatistical modelling of global terrorism</p>
+            </div>
+          </div>
+          <div class="cv-entry">
+            <span class="cv-year">2012</span>
+            <div>
+              <strong>BSc / MSc in Geography</strong>
+              <p>University of Fribourg, Switzerland</p>
+            </div>
+          </div>
+        </div>
+        <div class="cv-section">
+          <h2>Research Interests</h2>
+          <div class="tags">
+            <span>Spatial Statistics</span><span>Bayesian Inference</span><span>Epidemiology</span>
+            <span>Conflict Modelling</span><span>Machine Learning</span><span>Geostatistics</span>
+            <span>Deep Learning</span><span>R</span><span>Python</span>
+          </div>
+        </div>
+        <p class="mt-lg"><em>Full CV available on request via <a href="#contact" class="inline-link" data-tab="contact">contact</a>.</em></p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="tab-contact" class="tab-panel" data-continent="europe">
+      <div class="panel-inner">
+        <h1>Contact</h1>
+        <p class="lead">I welcome messages about research collaborations, spatial analysis questions, or general inquiries.</p>
+        <div class="contact-layout">
+          <div class="contact-details">
+            <h3>Address</h3>
+            <p>Center of Data Science<br>Zhejiang University<br>Hangzhou, China</p>
+            <h3>Online</h3>
+            <ul>
+              <li><a href="https://www.linkedin.com/in/dr-andr%C3%A9-python-717a062" target="_blank" rel="noopener">LinkedIn</a></li>
+              <li><a href="https://scholar.google.ch/citations?user=ifCgRGgAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener">Google Scholar</a></li>
+              <li><a href="https://person.zju.edu.cn/en/0019102" target="_blank" rel="noopener">ZJU Profile</a></li>
+            </ul>
+          </div>
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="cf-name">Name</label>
+              <input type="text" id="cf-name" name="name" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label for="cf-email">Email</label>
+              <input type="email" id="cf-email" name="email" placeholder="your@email.com" required />
+            </div>
+            <div class="form-group">
+              <label for="cf-subject">Subject</label>
+              <input type="text" id="cf-subject" name="subject" placeholder="Research collaboration, question…" />
+            </div>
+            <div class="form-group">
+              <label for="cf-msg">Message</label>
+              <textarea id="cf-msg" name="message" rows="5" placeholder="Your message…" required></textarea>
+            </div>
+            <button type="submit" class="btn-send">Send Message</button>
+            <p class="form-note" id="form-status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="site-footer">
+    <span>© <span id="fyear"></span> André Python</span>
+    <span class="footer-sep">·</span>
+    <span>Zhejiang University</span>
+  </footer>
+
+  <script src="js/globe.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
