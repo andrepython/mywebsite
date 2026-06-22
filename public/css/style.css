@@ -80,3 +80,7 @@ nav a{
     margin:20px 0;
     border-radius:20px;
 }
+
+html{
+    scroll-behavior:smooth;
+}
