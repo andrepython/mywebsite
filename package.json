@@ -1,0 +1,20 @@
+{
+  "name": "xr-swissinvest-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "XR-SWISSINVEST multilingual website",
+  "type": "module",
+  "engines": {
+    "node": ">=24 <26"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js",
+    "test": "node --test",
+    "verify:deploy": "node scripts/verify-deploy.js"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}
