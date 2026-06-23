@@ -26,7 +26,8 @@
     --accent: #E0BC63; --accent-ink: #ECC97A; --hero-text: #E0BC63;
   }
   [data-theme="dark"] [data-knob] { transform: translateX(20px); }
-  [data-cursor="on"], [data-cursor="on"] * { cursor: none !important; }
+  html, body { cursor: default; }
+  a, button, summary { cursor: pointer; }
   [data-logo="dark"] { display: none !important; }
   [data-theme="dark"] [data-logo="light"] { display: none !important; }
   [data-theme="dark"] [data-logo="dark"] { display: block !important; }
@@ -70,15 +71,15 @@
     </nav>
     <div style="display:flex; align-items:center; gap:18px;">
       <div data-lang-wrap="" style="position:relative;">
-        <button data-lang-toggle="" onClick="{{ toggleLangMenu }}" style="display:flex; align-items:center; gap:8px; background:transparent; border:1px solid var(--line); border-radius:999px; padding:7px 13px; cursor:pointer; color:var(--fg); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em;" style-hover="border-color:var(--hair)">
+        <button type="button" data-lang-toggle="" aria-haspopup="menu" aria-expanded="false" style="display:flex; align-items:center; gap:8px; background:transparent; border:1px solid var(--line); border-radius:999px; padding:7px 13px; cursor:pointer; color:var(--fg); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em;" style-hover="border-color:var(--hair)">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c2.6 2.8 2.6 15.2 0 18c-2.6-2.8-2.6-15.2 0-18Z"></path></svg>
           <span data-lang-current="">EN</span>
           <svg data-lang-caret="" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" style="transition:transform .25s ease;"><path d="M6 9l6 6 6-6"></path></svg>
         </button>
         <div data-lang-menu="" style="display:none; position:absolute; top:calc(100% + 10px); right:0; min-width:156px; background:var(--card); border:1px solid var(--line); border-radius:10px; box-shadow:0 14px 34px rgba(0,0,0,.16); padding:5px; z-index:40;">
-          <button data-lang-opt="en" onClick="{{ langEN }}" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">English<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
-          <button data-lang-opt="fr" onClick="{{ langFR }}" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">Français<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
-          <button data-lang-opt="zh" onClick="{{ langZH }}" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">中文<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
+          <button type="button" role="menuitem" data-lang-opt="en" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">English<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
+          <button type="button" role="menuitem" data-lang-opt="fr" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">Français<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
+          <button type="button" role="menuitem" data-lang-opt="zh" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">中文<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
         </div>
       </div>
       <a href="#contact" style="display:inline-flex; align-items:center; white-space:nowrap; text-decoration:none; font-size:15px; font-weight:500; color:#1A1A1A; background:var(--accent); padding:11px 20px; border-radius:2px;" style-hover="background:var(--accent-ink)" data-navlinks="">Book a consultation</a>
@@ -103,13 +104,13 @@
       <div data-reveal="left" style="width:100%;">
       <div style="display:flex; align-items:center; gap:14px; margin-bottom:30px;">
         <span style="width:30px; height:1px; background:var(--accent);"></span>
-        <span style="font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.2em; color:var(--muted); white-space:nowrap;">BULLE · CANTON DE FRIBOURG · 46.6193° N&nbsp; 7.0573° E</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.2em; color:var(--muted); white-space:nowrap;">BULLE · CANTON DE FRIBOURG · 46.6193° N 7.0573° E</span>
       </div>
       <h1 style="margin: 0; font-size: clamp(27px,4.7vw,64px); line-height: 1.04; font-weight: 500; letter-spacing: -.03em; color: var(--hero-text)">
-        Your Swiss Steward<br><span style="font-style: italic; font-weight: 400; white-space: nowrap;">in legal and investment matters!</span>
+        Your Swiss contact<br><span style="font-style: italic; font-weight: 400; white-space: nowrap;">for private investment</span>
       </h1>
       <p style="margin:34px 0 0; max-width:640px; font-size:clamp(16px,1.5vw,20px); line-height:1.55; color:var(--muted);">
-        An independent Swiss legal and investment firm in Bulle, providing discreet counsel and strategic guidance for private clients, businesses, real estate actors, and public bodies.
+        An independent Swiss firm in Bulle, providing discreet access to acquisitions, divestments and off-market opportunities.
       </p>
       <div style="display:flex; flex-wrap:wrap; align-items:center; gap:16px 28px; margin-top:42px;">
         <a href="#contact" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-size:15px; font-weight:500; color:#1A1A1A; background:var(--accent); padding:15px 26px; border-radius:2px;" style-hover="background:var(--accent-ink)">
@@ -131,51 +132,51 @@
           <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">WHO WE SERVE</span>
         </div>
         <h2 style="margin:0; max-width:18ch; font-size:clamp(34px,5.4vw,72px); line-height:1.02; font-weight:500; letter-spacing:-.025em; color:var(--hero-text);">One vision,<div>four horizons.</div></h2>
-        <p style="margin: 24px 0 0; max-width: 600px; font-size: 16px; line-height: 1.6; color: var(--muted); text-align: right">Swiss–Invest advises and represents private clients, businesses, real estate actors, and public bodies across legal matters and investment opportunities.&nbsp;</p>
+        <p style="margin: 24px 0 0; max-width: 600px; font-size: 16px; line-height: 1.6; color: var(--muted); text-align: right">XR-SWISSINVEST offers companies, real estate, and art assets to private investors, businesses, real estate actors, and collectors.&nbsp;</p>
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:30px 52px; margin-top:54px;">
           <div style="">
             
-            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">i. Private Clients &amp; Families</h3>
+            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">A. Investors</h3>
             <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.45; color:var(--muted);">
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Divorce, separation &amp; partnership dissolution</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Child custody &amp; parental authority</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Estate &amp; inheritance disputes</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Employment &amp; insurance claims</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Criminal defence &amp; victim assistance</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Direct acquisitions of private companies</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Minority and majority shareholdings</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Income-producing real estate opportunities</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Off-market investment opportunities</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Portfolio diversification through art assets</li>
             </ul>
           </div>
           <div style="">
             
-            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">ii. Businesses &amp; Entrepreneurs</h3>
+            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">B. Businesses &amp; Entrepreneurs</h3>
             <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.45; color:var(--muted);">
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Commercial contracts &amp; negotiations</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Company law — SA &amp; Sàrl matters</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>M&amp;A &amp; corporate restructuring</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>IP &amp; unfair competition</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Commercial litigation &amp; bankruptcy</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Company acquisitions and disposals</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Succession and ownership transitions</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Strategic partnerships and joint ventures</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Growth capital and investor introductions</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Cross-border transaction opportunities</li>
             </ul>
           </div>
           <div style="">
             
-            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">iii. Real Estate &amp; Construction</h3>
+            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">C. Real Estate Actors</h3>
             <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.45; color:var(--muted);">
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Lease &amp; rental law</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Construction contracts &amp; SIA standards</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Building defect &amp; warranty disputes</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Transactions &amp; conveyancing</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Spatial &amp; urban planning</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Residential investment properties</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Commercial and mixed-use assets</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Development land and projects</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Off-market property transactions</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Sale-and-acquisition mandates</li>
             </ul>
           </div>
           <div style="">
             
-            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">iv. Public &amp; Administrative</h3>
+            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">D. Collectors</h3>
             <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.45; color:var(--muted);">
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Municipal law &amp; procedures</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Public procurement &amp; tendering</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Residence permits &amp; immigration</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Tax &amp; fiscal disputes</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Administrative appeals</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Fine art acquisitions and sales</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Private collection sourcing</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Watches and jewellery investments</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Rare and historical objects</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Collection divestment opportunities</li>
             </ul>
           </div>
         </div>
@@ -188,16 +189,16 @@
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:30px;">
           <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--accent);">03</span>
           <span style="width:24px; height:1px; background:var(--line);"></span>
-          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">INVESTMENT ADVISORY</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">INVESTMENT</span>
         </div>
         <h2 style="margin: 0; max-width: 16ch; font-size: clamp(34px,5.4vw,72px); line-height: 1.02; font-weight: 500; letter-spacing: -.025em; color: var(--hero-text); text-align: left">Curated, confidential, often off the market.</h2>
         <p style="margin: 30px 0 0; max-width: 540px; font-size: clamp(16px,1.4vw,19px); line-height: 1.6; color: var(--muted); text-align: left; width: 100%; height: 100%">We identify, select, and present high-quality opportunities across three core sectors — drawing on an established network of investors, business owners, and specialists.</p><p></p>
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:28px 44px; margin-top:64px;">
           <div>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; color:var(--accent);">01 — BUSINESS</span>
-            <h3 style="margin:12px 0 0; font-size:16px; font-weight:600; letter-spacing:-.01em;">Business Investments</h3>
-            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Swiss and international companies with strong development, succession, or value-creation potential.</p>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; color:var(--accent);">01 — COMPANIES</span>
+            <h3 style="margin:12px 0 0; font-size:16px; font-weight:600; letter-spacing:-.01em;">Small and Medium-Sized Firms</h3>
+            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Acquisition and sale of Swiss and international small and medium-sized companies with strong development, succession, or value-creation potential.</p>
             <div style="display:flex; flex-wrap:wrap; gap:6px;">
               <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Acquisitions &amp; sales</span>
               <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Shareholdings</span>
@@ -208,7 +209,7 @@
           <div>
             <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; color:var(--accent);">02 — REAL ESTATE</span>
             <h3 style="margin:12px 0 0; font-size:16px; font-weight:600; letter-spacing:-.01em;">Real Estate Investments</h3>
-            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Swiss property aligned with each client's financial, strategic, and wealth-management objectives.</p>
+            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Investment in residential and commercial assets aligned with each client's financial, strategic, and wealth-management objectives.</p>
             <div style="display:flex; flex-wrap:wrap; gap:6px;">
               <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Residential</span>
               <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Commercial &amp; mixed-use</span>
@@ -217,9 +218,9 @@
             </div>
           </div>
           <div>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; color:var(--accent);">03 — PRICELESS ASSETS</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; color:var(--accent);">03 — ART</span>
             <h3 style="margin:12px 0 0; font-size:16px; font-weight:600; letter-spacing:-.01em;">Art &amp; Collectible Assets</h3>
-            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Prestige assets and collectibles as alternative investment vehicles and diversification instruments.</p>
+            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Prestige assets and collectibles including fine art, watches and jewellery as alternative investment vehicles and diversification instruments.</p>
             <div style="display:flex; flex-wrap:wrap; gap:6px;">
               <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Fine art</span>
               <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Watches &amp; jewellery</span>
@@ -261,7 +262,7 @@
           </div>
           <div style="">
             <div style="display:flex; align-items:baseline; gap:12px;"><h3 style="margin:0; font-size:18px; font-weight:600;">Discretion</h3></div>
-            <p style="margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--muted);">Attorney–client privilege and strict contractual confidentiality on every matter.</p>
+            <p style="margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--muted);">We ensure strict contractual confidentiality on every matter.</p>
           </div>
           <div style="">
             <div style="display:flex; align-items:baseline; gap:12px;"><h3 style="margin:0; font-size:18px; font-weight:600;">Long-Term Perspective</h3></div>
@@ -281,32 +282,32 @@
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:30px;">
           <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--accent);">06</span>
           <span style="width:24px; height:1px; background:var(--line);"></span>
-          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">WHY SWISS-INVEST</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">WHY XR-SWISSINVEST</span>
         </div>
-        <h2 style="margin:0; max-width:none; font-size:clamp(32px,5vw,64px); line-height:1.06; font-weight:500; letter-spacing:-.025em; color:var(--hero-text);"><p style="position: relative">Independent by nature,<br><span style="color: var(--hero-text); font-size: clamp(32px, 5vw, 64px); letter-spacing: -0.025em;">coordinated by design.</span></p></h2><p style="margin:26px 0 0; max-width:600px; font-size:16px; line-height:1.6; color:var(--muted);">Few firms bring legal counsel and investment advisory under one roof.<br>The advantages below are the ones clients return for.</p><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:36px 48px; margin-top:48px;">
+        <h2 style="margin:0; max-width:none; font-size:clamp(32px,5vw,64px); line-height:1.06; font-weight:500; letter-spacing:-.025em; color:var(--hero-text);"><p style="position: relative">Access where others<br><span style="color: var(--hero-text); font-size: clamp(32px, 5vw, 64px); letter-spacing: -0.025em;">don’t look.</span></p></h2><p style="margin:26px 0 0; max-width:600px; font-size:16px; line-height:1.6; color:var(--muted);">The most attractive opportunities never reach the public market. XR-SWISSINVEST leverages a trusted Swiss network to identify, qualify, and connect buyers and sellers of companies, real estate, and art assets.</p><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:36px 48px; margin-top:48px;">
           <div>
-            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Dual Expertise</h3>
-            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Swiss legal precision and investment-transaction experience within one integrated firm — a single trusted advisor for both.</p>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Curated Opportunities</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Selective investment opportunities sourced through trusted relationships across Switzerland and beyond.</p>
           </div>
           <div>
-            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Curated Access</h3>
-            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Selective, often off-market opportunities sourced through an established network across Switzerland.</p>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Off-Market Access</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Transactions often unavailable through public channels, providing unique opportunities and reduced competition.</p>
           </div>
           <div>
             <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Qualified Network</h3>
-            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Direct reach into investors, entrepreneurs, real estate professionals, and asset specialists — Swiss and international.</p>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Direct access to business owners, investors, property professionals, collectors, and intermediaries.</p>
           </div>
           <div>
-            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Strict Confidentiality</h3>
-            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Every mandate handled with the highest professional secrecy and respect for attorney–client privilege.</p>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Confidential Transactions</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Every discussion and mandate is handled with discretion from first contact through completion.</p>
           </div>
           <div>
-            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Tailored Approach</h3>
-            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Every engagement structured around the client's specific objectives, risk profile, and long-term interests.</p>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Tailored Search Mandates</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Each acquisition or divestment project is structured around specific objectives, criteria, and timelines.</p>
           </div>
           <div>
-            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Independence</h3>
-            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Full professional independence, in compliance with Swiss privilege and the rules of the Fribourg Bar.</p>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Swiss Perspective</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Long experience in the Swiss market, local business culture, and transaction ecosystem.</p>
           </div>
         </div>
       </div></section><section id="contact" data-mode="harbor" data-screen-label="Contact" style="position:relative; padding:clamp(88px,11vw,156px) clamp(20px,6vw,96px);">
@@ -317,33 +318,24 @@
           <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">CONTACT</span>
         </div>
         <h2 style="margin:0; max-width:16ch; font-size:clamp(34px,5.4vw,72px); line-height:1.02; font-weight:500; letter-spacing:-.025em; color:var(--hero-text);">Get in touch!</h2>
-        <p style="margin:30px 0 56px; max-width:560px; font-size:clamp(16px,1.4vw,19px); line-height:1.6; color:var(--muted);"><span style="color: var(--muted); font-size: clamp(16px, 1.4vw, 19px);">Two initial consultations —<br>for legal matters, and investment mandates.<br>Both by appointment, both in strict confidence.</span></p>
+        <p style="margin:30px 0 56px; max-width:560px; font-size:clamp(16px,1.4vw,19px); line-height:1.6; color:var(--muted);"><span style="color: var(--muted); font-size: clamp(16px, 1.4vw, 19px);">Consultations for investment mandates by appointment and in strict confidence.</span></p>
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px 52px;">
-          <div style="">
-            <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--accent);">LEGAL CONSULTATION</span>
-            <p style="margin:18px 0 0; font-size:15.5px; line-height:1.6; color:var(--muted);">An initial personalised legal assessment with the team at our office in Bulle.</p>
-            <div style="display:flex; flex-direction:column; gap:10px; margin-top:24px; font-size:14.5px; color:var(--fg);">
-              <div style="display:flex; justify-content:space-between; gap:16px; padding-bottom:10px; border-bottom:1px solid var(--line);"><span style="color:var(--muted);">Hours</span><span>Mon–Thu · 16:30–18:00</span></div>
-              <div style="display:flex; justify-content:space-between; gap:16px; padding-bottom:10px; border-bottom:1px solid var(--line);"><span style="color:var(--muted);">Fee</span><span>CHF 30 · 30 minutes</span></div>
-              <div style="display:flex; justify-content:space-between; gap:16px;"><span style="color:var(--muted);">Booking</span><span>By appointment</span></div>
-            </div>
-          </div>
           <div style="">
             <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--accent);">INVESTMENT CONSULTATION</span>
             <p style="margin:18px 0 0; font-size:15.5px; line-height:1.6; color:var(--muted);">A confidential discussion of objectives, acquisition plans, or divestment projects.</p>
             <ul style="margin:24px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:11px; font-size:14.5px; line-height:1.45; color:var(--muted);">
               <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Understand your objectives &amp; investor profile</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Review an existing opportunity or project</li>
-              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Define suitable criteria &amp; next steps</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Suggest an existing opportunity or project</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Carry out the necessary steps for your acquisition or sale</li>
             </ul>
           </div>
         </div>
 
         <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:24px; margin-top:48px; padding:28px clamp(24px,3vw,40px); border:1px solid var(--line); background:var(--card);">
           <div>
-            <div style="font-size:17px; font-weight:600;">Swiss-Invest — Legal &amp; Investment Advisory</div>
-            <div style="margin-top:6px; font-size:14.5px; color:var(--muted);">Avenue de la Gare 8, 1630 Bulle, Canton de Fribourg · swiss-invest.com</div>
+            <div style="font-size:17px; font-weight:600;">XR-SWISSINVEST — A Swiss investment company</div>
+            <div style="margin-top:6px; font-size:14.5px; color:var(--muted);">Avenue de la Gare 8, 1630 Bulle, Canton de Fribourg · xr-swissinvest.ch</div>
           </div>
           <a href="#contact" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-size:15px; font-weight:500; color:#1A1A1A; background:var(--accent); padding:15px 28px; border-radius:2px; white-space:nowrap;" style-hover="background:var(--accent-ink)">Request an appointment <span>→</span></a>
         </div>
@@ -360,14 +352,14 @@
           <div style="max-width:360px;">
             <img data-logo="light" src="assets/logo-light.svg" alt="XR-SwissInvest" style="height:34px; width:auto; display:block;">
             <img data-logo="dark" src="assets/logo-dark.svg" alt="XR-SwissInvest" style="height:34px; width:auto; display:block;">
-            <p style="margin:20px 0 0; font-size:14.5px; line-height:1.6; color:var(--muted);">Precision. Discretion. Lasting value. An independent Swiss legal &amp; investment advisory firm based in Bulle, Canton de Fribourg. We unite rigorous legal counsel with curated, often off-market investment opportunity under a single roof — serving private clients, businesses, real estate actors, and public bodies. Every mandate is handled in strict confidence, with the long-term interests of the client at its centre.</p>
+            <p style="margin:20px 0 0; font-size:14.5px; line-height:1.6; color:var(--muted);">Precision. Discretion. Lasting value. An independent Swiss firm based in Bulle, Canton de Fribourg. We offer curated, often off-market investment opportunities, serving private clients, businesses, real estate actors, and collectors. Every mandate is handled in strict confidence, with the long-term interests of the client at its centre.</p>
           </div>
 
           <!-- consultations + office (stacked) -->
           <div style="display:flex; flex-direction:column; gap:32px;">
             <div>
-              <div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--muted); margin-bottom:16px;">CONSULTATIONS</div>
-              <div style="font-size:14.5px; line-height:1.7; color:var(--fg);">Legal · Mon–Thu 16:30–18:00<br>Investment · By appointment<br>swiss-invest.com</div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--muted); margin-bottom:16px;">CONTACT</div>
+              <div style="font-size:14.5px; line-height:1.7; color:var(--fg);">By appointment<br>xr-swissinvest.ch</div>
             </div>
             <div>
               <div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--muted); margin-bottom:16px;">OFFICE</div>
@@ -375,44 +367,10 @@
             </div>
           </div>
 
-          <!-- FAQ (compact, right) -->
-          <div style="flex:1; min-width:320px; max-width:440px;">
-            <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
-              <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--accent);">FREQUENTLY ASKED</span>
-              <span style="flex:1; height:1px; background:var(--line);"></span>
-            </div>
-            <div style="display:flex; flex-direction:column;">
-            <details style="border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
-              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Are all exchanges with the lawyer confidential?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
-              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Yes. All exchanges are covered by professional secrecy (attorney–client privilege) and handled with strict confidentiality in accordance with Swiss Bar rules and applicable law.</p>
-            </details>
-            <details style="border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
-              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Can a dispute be resolved without going to court?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
-              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Where appropriate, the firm can negotiate, mediate, or facilitate conciliation on your behalf — before, during, or instead of formal court proceedings.</p>
-            </details>
-            <details style="border-bottom:1px solid var(--line);">
-              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Do I need an appointment for a legal consultation?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
-              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Yes. All consultations are by appointment so the firm can review your situation in advance. Legal consultations are available Monday to Thursday, 16:30–18:00, at a fixed fee of CHF 30 for 30 minutes.</p>
-            </details>
-            <details style="border-bottom:1px solid var(--line);">
-              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">What investment opportunities does Swiss-Invest facilitate?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
-              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Primarily transactions involving Swiss companies (acquisitions, sales, shareholdings), Swiss real estate (residential, commercial, development land), and alternative assets including fine art, collectible watches, jewellery, and private collections.</p>
-            </details>
-            <details style="border-bottom:1px solid var(--line);">
-              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Are the investment opportunities publicly available?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
-              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Some are publicly available, while a significant number originate from private networks and off-market transactions accessible exclusively through the firm's established network.</p>
-            </details>
-            <details style="border-bottom:1px solid var(--line);">
-              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Do you work with international investors?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
-              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Yes. Swiss-Invest assists both Swiss and international investors and clients seeking legal or investment advisory services in Switzerland.</p>
-            </details>
-            </div>
-          </div>
-
         </div>
         <div style="display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; align-items:center; margin-top:56px; padding-top:24px; border-top:1px solid var(--line); font-size:12.5px; color:var(--muted);">
-          <span>© 2025 Swiss-Invest. All rights reserved.</span>
-          <span style="font-family:'JetBrains Mono',monospace; letter-spacing:.14em;">AVOCAT AU BARREAU · FRIBOURG</span>
+          <span>© 2026 XR-SWISSINVEST. All rights reserved.</span>
+          <span style="font-family:'JetBrains Mono',monospace; letter-spacing:.14em;">XR-SWISSINVEST · BULLE</span>
         </div>
       </div>
     </footer>
@@ -433,7 +391,7 @@
   </div>
 
   <!-- CUSTOM CURSOR -->
-  <div ref="{{ cursorRef }}" style="position: fixed; left: 78px; top: 2px; z-index: 60; pointer-events: none; transform: translate(-300px,-300px); will-change: transform; width: 8px; height: 8px">
+  <div ref="{{ cursorRef }}" aria-hidden="true" style="display:none; position:fixed; pointer-events:none;">
     <div ref="{{ cRingRef }}" style="position:absolute; left:0; top:0; width:36px; height:36px; margin:-18px 0 0 -18px; border:1px solid var(--accent); border-radius:50%; transition:width .22s ease, height .22s ease, margin .22s ease, opacity .22s ease;">
       <span style="position:absolute; top:-5px; left:50%; width:1px; height:5px; transform:translateX(-50%); background:var(--accent);"></span>
       <span style="position:absolute; bottom:-5px; left:50%; width:1px; height:5px; transform:translateX(-50%); background:var(--accent);"></span>
@@ -479,6 +437,22 @@ class Component extends DCLogic {
     if (savedLang !== 'en') this.setState({ lang: savedLang });
     else this.updateLangUI('en');
     this.langMenuOpen = false;
+    this._onLangClick = (e) => {
+      const toggle = e.target.closest && e.target.closest('[data-lang-toggle]');
+      if (toggle) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleLangMenu();
+        return;
+      }
+      const option = e.target.closest && e.target.closest('[data-lang-opt]');
+      if (option) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setLang(option.getAttribute('data-lang-opt'));
+      }
+    };
+    this.rootRef.current.addEventListener('click', this._onLangClick);
     this._onDocClick = (e) => {
       if (this.langMenuOpen && !(e.target.closest && e.target.closest('[data-lang-wrap]'))) this.closeLangMenu();
     };
@@ -557,9 +531,9 @@ class Component extends DCLogic {
       this.riseStart = (window.performance && performance.now) ? performance.now() : Date.now();
     }
 
-    const fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-    if (fine) this.rootRef.current.setAttribute('data-cursor', 'on');
-    else if (this.cursorRef.current) this.cursorRef.current.style.display = 'none';
+    // Use the browser's standard cursor on every device.
+    this.rootRef.current.removeAttribute('data-cursor');
+    if (this.cursorRef.current) this.cursorRef.current.style.display = 'none';
 
     this._onOver = (e) => {
       const t = e.target;
@@ -595,8 +569,10 @@ class Component extends DCLogic {
     const root = this.rootRef.current; if (!root) return;
     const menu = root.querySelector('[data-lang-menu]');
     const caret = root.querySelector('[data-lang-caret]');
+    const toggle = root.querySelector('[data-lang-toggle]');
     if (menu) menu.style.display = this.langMenuOpen ? 'block' : 'none';
     if (caret) caret.style.transform = this.langMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    if (toggle) toggle.setAttribute('aria-expanded', this.langMenuOpen ? 'true' : 'false');
   }
 
   initI18n() {
@@ -659,6 +635,69 @@ class Component extends DCLogic {
   i18nData() {
     return {
       fr: {
+        "BULLE · CANTON DE FRIBOURG · 46.6193° N 7.0573° E": "BULLE · CANTON DE FRIBOURG · 46.6193° N 7.0573° E",
+        "Your Swiss contact": "Votre contact suisse",
+        "for private investment": "pour l’investissement privé",
+        "An independent Swiss firm in Bulle, providing discreet access to acquisitions, divestments and off-market opportunities.": "Une société suisse indépendante basée à Bulle, offrant un accès discret aux acquisitions, aux cessions et aux opportunités hors marché.",
+        "XR-SWISSINVEST offers companies, real estate, and art assets to private investors, businesses, real estate actors, and collectors.": "XR-SWISSINVEST propose des entreprises, des biens immobiliers et des actifs artistiques aux investisseurs privés, aux entreprises, aux acteurs immobiliers et aux collectionneurs.",
+        "A. Investors": "A. Investisseurs",
+        "Direct acquisitions of private companies": "Acquisitions directes de sociétés privées",
+        "Minority and majority shareholdings": "Participations minoritaires et majoritaires",
+        "Income-producing real estate opportunities": "Opportunités immobilières génératrices de revenus",
+        "Off-market investment opportunities": "Opportunités d’investissement hors marché",
+        "Portfolio diversification through art assets": "Diversification de portefeuille par les actifs artistiques",
+        "B. Businesses & Entrepreneurs": "B. Entreprises & entrepreneurs",
+        "Company acquisitions and disposals": "Acquisitions et cessions d’entreprises",
+        "Succession and ownership transitions": "Successions et transitions de propriété",
+        "Strategic partnerships and joint ventures": "Partenariats stratégiques et coentreprises",
+        "Growth capital and investor introductions": "Capital de croissance et mise en relation avec des investisseurs",
+        "Cross-border transaction opportunities": "Opportunités de transactions transfrontalières",
+        "C. Real Estate Actors": "C. Acteurs immobiliers",
+        "Residential investment properties": "Biens immobiliers résidentiels d’investissement",
+        "Commercial and mixed-use assets": "Actifs commerciaux et à usage mixte",
+        "Development land and projects": "Terrains à développer et projets",
+        "Off-market property transactions": "Transactions immobilières hors marché",
+        "Sale-and-acquisition mandates": "Mandats de vente et d’acquisition",
+        "D. Collectors": "D. Collectionneurs",
+        "Fine art acquisitions and sales": "Acquisitions et ventes d’œuvres d’art",
+        "Private collection sourcing": "Recherche de collections privées",
+        "Watches and jewellery investments": "Investissements en montres et joaillerie",
+        "Rare and historical objects": "Objets rares et historiques",
+        "Collection divestment opportunities": "Opportunités de cession de collections",
+        "INVESTMENT": "INVESTISSEMENT",
+        "01 — COMPANIES": "01 — ENTREPRISES",
+        "Small and Medium-Sized Firms": "Petites et moyennes entreprises",
+        "Acquisition and sale of Swiss and international small and medium-sized companies with strong development, succession, or value-creation potential.": "Acquisition et vente de petites et moyennes entreprises suisses et internationales présentant un fort potentiel de développement, de succession ou de création de valeur.",
+        "Investment in residential and commercial assets aligned with each client's financial, strategic, and wealth-management objectives.": "Investissement dans des actifs résidentiels et commerciaux alignés sur les objectifs financiers, stratégiques et patrimoniaux de chaque client.",
+        "03 — ART": "03 — ART",
+        "Prestige assets and collectibles including fine art, watches and jewellery as alternative investment vehicles and diversification instruments.": "Actifs de prestige et objets de collection, notamment œuvres d’art, montres et joaillerie, utilisés comme véhicules d’investissement alternatifs et instruments de diversification.",
+        "We ensure strict contractual confidentiality on every matter.": "Nous garantissons une stricte confidentialité contractuelle pour chaque dossier.",
+        "WHY XR-SWISSINVEST": "POURQUOI XR-SWISSINVEST",
+        "Access where others": "Accéder là où les autres",
+        "don’t look.": "ne regardent pas.",
+        "The most attractive opportunities never reach the public market. XR-SWISSINVEST leverages a trusted Swiss network to identify, qualify, and connect buyers and sellers of companies, real estate, and art assets.": "Les opportunités les plus attractives n’atteignent jamais le marché public. XR-SWISSINVEST s’appuie sur un réseau suisse de confiance pour identifier, qualifier et mettre en relation les acheteurs et vendeurs d’entreprises, de biens immobiliers et d’actifs artistiques.",
+        "Curated Opportunities": "Opportunités sélectionnées",
+        "Selective investment opportunities sourced through trusted relationships across Switzerland and beyond.": "Des opportunités d’investissement sélectionnées grâce à des relations de confiance en Suisse et au-delà.",
+        "Off-Market Access": "Accès hors marché",
+        "Transactions often unavailable through public channels, providing unique opportunities and reduced competition.": "Des transactions souvent indisponibles par les canaux publics, offrant des opportunités uniques et une concurrence réduite.",
+        "Direct access to business owners, investors, property professionals, collectors, and intermediaries.": "Un accès direct aux propriétaires d’entreprises, investisseurs, professionnels de l’immobilier, collectionneurs et intermédiaires.",
+        "Confidential Transactions": "Transactions confidentielles",
+        "Every discussion and mandate is handled with discretion from first contact through completion.": "Chaque échange et chaque mandat sont traités avec discrétion, du premier contact jusqu’à la finalisation.",
+        "Tailored Search Mandates": "Mandats de recherche sur mesure",
+        "Each acquisition or divestment project is structured around specific objectives, criteria, and timelines.": "Chaque projet d’acquisition ou de cession est structuré selon des objectifs, des critères et un calendrier précis.",
+        "Swiss Perspective": "Perspective suisse",
+        "Long experience in the Swiss market, local business culture, and transaction ecosystem.": "Une longue expérience du marché suisse, de la culture d’affaires locale et de l’écosystème transactionnel.",
+        "Consultations for investment mandates by appointment and in strict confidence.": "Consultations pour mandats d’investissement, sur rendez-vous et en toute confidentialité.",
+        "Suggest an existing opportunity or project": "Proposer une opportunité ou un projet existant",
+        "Carry out the necessary steps for your acquisition or sale": "Réaliser les démarches nécessaires à votre acquisition ou à votre vente",
+        "XR-SWISSINVEST — A Swiss investment company": "XR-SWISSINVEST — Une société d’investissement suisse",
+        "Avenue de la Gare 8, 1630 Bulle, Canton de Fribourg · xr-swissinvest.ch": "Avenue de la Gare 8, 1630 Bulle, Canton de Fribourg · xr-swissinvest.ch",
+        "Precision. Discretion. Lasting value. An independent Swiss firm based in Bulle, Canton de Fribourg. We offer curated, often off-market investment opportunities, serving private clients, businesses, real estate actors, and collectors. Every mandate is handled in strict confidence, with the long-term interests of the client at its centre.": "Précision. Discrétion. Valeur durable. Une société suisse indépendante basée à Bulle, dans le canton de Fribourg. Nous proposons des opportunités d’investissement sélectionnées, souvent hors marché, aux clients privés, entreprises, acteurs immobiliers et collectionneurs. Chaque mandat est traité dans la plus stricte confidentialité, avec les intérêts à long terme du client au centre de notre démarche.",
+        "xr-swissinvest.ch": "xr-swissinvest.ch",
+        "Avenue de la Gare 8": "Avenue de la Gare 8",
+        "1630 Bulle": "1630 Bulle",
+        "© 2026 XR-SWISSINVEST. All rights reserved.": "© 2026 XR-SWISSINVEST. Tous droits réservés.",
+        "XR-SWISSINVEST · BULLE": "XR-SWISSINVEST · BULLE",
         "About Us": "À propos",
         "Who We Serve": "Qui nous servons",
         "Investment Areas": "Domaines d'investissement",
@@ -799,6 +838,69 @@ class Component extends DCLogic {
         "ON BEARING": "AU CAP"
       },
       zh: {
+        "BULLE · CANTON DE FRIBOURG · 46.6193° N 7.0573° E": "布勒 · 弗里堡州 · 北纬 46.6193° 东经 7.0573°",
+        "Your Swiss contact": "您在瑞士的投资联系人",
+        "for private investment": "专注私人投资",
+        "An independent Swiss firm in Bulle, providing discreet access to acquisitions, divestments and off-market opportunities.": "一家位于布勒的独立瑞士公司，为收购、出售及非公开市场机会提供审慎而私密的渠道。",
+        "XR-SWISSINVEST offers companies, real estate, and art assets to private investors, businesses, real estate actors, and collectors.": "XR-SWISSINVEST 为私人投资者、企业、房地产从业者及收藏家提供企业、房地产与艺术资产机会。",
+        "A. Investors": "A. 投资者",
+        "Direct acquisitions of private companies": "直接收购私人企业",
+        "Minority and majority shareholdings": "少数股权与控股权投资",
+        "Income-producing real estate opportunities": "收益型房地产机会",
+        "Off-market investment opportunities": "非公开市场投资机会",
+        "Portfolio diversification through art assets": "通过艺术资产实现投资组合多元化",
+        "B. Businesses & Entrepreneurs": "B. 企业与创业者",
+        "Company acquisitions and disposals": "企业收购与出售",
+        "Succession and ownership transitions": "企业传承与所有权交接",
+        "Strategic partnerships and joint ventures": "战略合作与合资项目",
+        "Growth capital and investor introductions": "成长资本与投资者对接",
+        "Cross-border transaction opportunities": "跨境交易机会",
+        "C. Real Estate Actors": "C. 房地产从业者",
+        "Residential investment properties": "住宅投资物业",
+        "Commercial and mixed-use assets": "商业及综合用途资产",
+        "Development land and projects": "开发用地与项目",
+        "Off-market property transactions": "非公开房地产交易",
+        "Sale-and-acquisition mandates": "出售与收购委托",
+        "D. Collectors": "D. 收藏家",
+        "Fine art acquisitions and sales": "艺术品收购与出售",
+        "Private collection sourcing": "私人收藏寻源",
+        "Watches and jewellery investments": "腕表与珠宝投资",
+        "Rare and historical objects": "珍稀及历史物件",
+        "Collection divestment opportunities": "收藏品出售机会",
+        "INVESTMENT": "投资",
+        "01 — COMPANIES": "01 — 企业",
+        "Small and Medium-Sized Firms": "中小型企业",
+        "Acquisition and sale of Swiss and international small and medium-sized companies with strong development, succession, or value-creation potential.": "收购及出售具有强劲发展、传承或价值创造潜力的瑞士及国际中小型企业。",
+        "Investment in residential and commercial assets aligned with each client's financial, strategic, and wealth-management objectives.": "投资符合客户财务、战略及财富管理目标的住宅与商业资产。",
+        "03 — ART": "03 — 艺术",
+        "Prestige assets and collectibles including fine art, watches and jewellery as alternative investment vehicles and diversification instruments.": "以艺术品、腕表及珠宝等高端资产和收藏品作为另类投资工具与多元化配置手段。",
+        "We ensure strict contractual confidentiality on every matter.": "我们确保每项事务均受到严格的合同保密保护。",
+        "WHY XR-SWISSINVEST": "为何选择 XR-SWISSINVEST",
+        "Access where others": "抵达他人",
+        "don’t look.": "未曾关注之处。",
+        "The most attractive opportunities never reach the public market. XR-SWISSINVEST leverages a trusted Swiss network to identify, qualify, and connect buyers and sellers of companies, real estate, and art assets.": "最具吸引力的机会往往不会进入公开市场。XR-SWISSINVEST 借助值得信赖的瑞士网络，识别并筛选企业、房地产和艺术资产机会，连接合适的买卖双方。",
+        "Curated Opportunities": "精选机会",
+        "Selective investment opportunities sourced through trusted relationships across Switzerland and beyond.": "通过遍布瑞士及海外的可信关系网络，获取经过筛选的投资机会。",
+        "Off-Market Access": "非公开市场渠道",
+        "Transactions often unavailable through public channels, providing unique opportunities and reduced competition.": "获取公开渠道通常无法触及的交易，带来独特机会并降低竞争。",
+        "Direct access to business owners, investors, property professionals, collectors, and intermediaries.": "直接连接企业主、投资者、房地产专业人士、收藏家及中介机构。",
+        "Confidential Transactions": "保密交易",
+        "Every discussion and mandate is handled with discretion from first contact through completion.": "从首次接洽到交易完成，每次沟通与委托均以审慎保密的方式处理。",
+        "Tailored Search Mandates": "定制寻源委托",
+        "Each acquisition or divestment project is structured around specific objectives, criteria, and timelines.": "每项收购或出售项目均围绕明确目标、筛选标准和时间安排进行设计。",
+        "Swiss Perspective": "瑞士视角",
+        "Long experience in the Swiss market, local business culture, and transaction ecosystem.": "深耕瑞士市场，熟悉本地商业文化及交易生态。",
+        "Consultations for investment mandates by appointment and in strict confidence.": "投资委托咨询实行预约制，并严格保密。",
+        "Suggest an existing opportunity or project": "推荐现有机会或项目",
+        "Carry out the necessary steps for your acquisition or sale": "推进收购或出售所需的各项步骤",
+        "XR-SWISSINVEST — A Swiss investment company": "XR-SWISSINVEST — 瑞士投资公司",
+        "Avenue de la Gare 8, 1630 Bulle, Canton de Fribourg · xr-swissinvest.ch": "瑞士弗里堡州布勒市火车站大道 8 号，邮编 1630 · xr-swissinvest.ch",
+        "Precision. Discretion. Lasting value. An independent Swiss firm based in Bulle, Canton de Fribourg. We offer curated, often off-market investment opportunities, serving private clients, businesses, real estate actors, and collectors. Every mandate is handled in strict confidence, with the long-term interests of the client at its centre.": "精准。审慎。持久价值。我们是一家位于弗里堡州布勒的独立瑞士公司，为私人客户、企业、房地产从业者及收藏家提供精选且通常非公开的投资机会。每项委托均严格保密，并始终以客户的长期利益为核心。",
+        "xr-swissinvest.ch": "xr-swissinvest.ch",
+        "Avenue de la Gare 8": "火车站大道 8 号",
+        "1630 Bulle": "1630 布勒",
+        "© 2026 XR-SWISSINVEST. All rights reserved.": "© 2026 XR-SWISSINVEST。保留所有权利。",
+        "XR-SWISSINVEST · BULLE": "XR-SWISSINVEST · 布勒",
         "About Us": "关于我们",
         "Who We Serve": "服务对象",
         "Investment Areas": "投资领域",
@@ -949,6 +1051,7 @@ class Component extends DCLogic {
     window.removeEventListener('mouseout', this._onLeave);
     document.removeEventListener('visibilitychange', this._onVis);
     if (this._onDocClick) document.removeEventListener('click', this._onDocClick);
+    if (this.rootRef.current && this._onLangClick) this.rootRef.current.removeEventListener('click', this._onLangClick);
     if (this._io) this._io.disconnect();
     if (this._revIO) this._revIO.disconnect();
     if (this.rootRef.current) this.rootRef.current.removeEventListener('mouseover', this._onOver, true);
