@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  :root {
+    --bg: #FBFBFB; --card: #FFFFFF; --fg: #14161A; --muted: #6A6E74;
+    --line: rgba(20,22,26,0.12); --hair: rgba(20,22,26,0.30);
+    --accent: #E0BC63; --accent-ink: #9A7720; --hero-text: #12264B;
+  }
+  [data-theme="dark"] {
+    --bg: #0C0F14; --card: #12161D; --fg: #ECEAE6; --muted: #888E97;
+    --line: rgba(255,255,255,0.12); --hair: rgba(255,255,255,0.28);
+    --accent: #E0BC63; --accent-ink: #ECC97A; --hero-text: #E0BC63;
+  }
+  [data-theme="dark"] [data-knob] { transform: translateX(20px); }
+  [data-cursor="on"], [data-cursor="on"] * { cursor: none !important; }
+  [data-logo="dark"] { display: none !important; }
+  [data-theme="dark"] [data-logo="light"] { display: none !important; }
+  [data-theme="dark"] [data-logo="dark"] { display: block !important; }
+  [data-navlinks] a { white-space: nowrap; }
+  [data-reveal="right"] { margin-left: auto !important; margin-right: 0 !important; }
+  [data-reveal="right"] > h2, [data-reveal="right"] > p { margin-left: auto !important; text-align: right; }
+  [data-reveal="right"] > div:first-child { justify-content: flex-end; }
+  [data-reveal] { transition: opacity 1.2s cubic-bezier(0.33, 1, 0.68, 1), transform 1.2s cubic-bezier(0.33, 1, 0.68, 1); will-change: opacity, transform; }
+  summary { list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  details[open] [data-plus] { transform: rotate(45deg); }
+  a { color: inherit; }
+  @media (max-width: 860px) {
+    [data-navlinks] { display: none !important; }
+    [data-compass] { display: none !important; }
+  }
+  @media (max-height: 760px) {
+    [data-compass] { display: none !important; }
+  }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" data-theme="light" style="position:relative; width:100%; background:var(--bg); color:var(--fg); font-family:'Schibsted Grotesk',system-ui,sans-serif;">
+
+  <!-- FIXED CHART + PARTICLE BACKDROP -->
+  <div style="position:fixed; inset:0; z-index:0; background:var(--bg);">
+    <canvas ref="{{ chartRef }}" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></canvas>
+  </div>
+
+  <!-- NAV -->
+  <header style="position:fixed; top:0; left:0; right:0; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:26px clamp(20px,5vw,56px);">
+    <a href="#top" style="display:flex; align-items:center; text-decoration:none;">
+      <img data-logo="light" src="assets/logo-light.svg" alt="XR-SwissInvest" style="height:42px; width:auto; display:block;">
+      <img data-logo="dark" src="assets/logo-dark.svg" alt="XR-SwissInvest" style="height:42px; width:auto; display:block;">
+    </a>
+    <nav data-navlinks="" style="display:flex; align-items:center; gap:18px; font-size:18px; letter-spacing:.01em; color:var(--muted);">
+      <a href="#top" data-navtab="" style="text-decoration:none; padding:7px 16px; border-radius:999px; border:1px solid transparent; transition:color .3s ease, border-color .45s ease, background-color .45s ease;" style-hover="color:var(--fg)">About Us</a>
+      <a href="#serve" data-navtab="" style="text-decoration:none; padding:7px 16px; border-radius:999px; border:1px solid transparent; transition:color .3s ease, border-color .45s ease, background-color .45s ease;" style-hover="color:var(--fg)">Who We Serve</a>
+      <a href="#investments" data-navtab="" style="text-decoration:none; padding:7px 16px; border-radius:999px; border:1px solid transparent; transition:color .3s ease, border-color .45s ease, background-color .45s ease;" style-hover="color:var(--fg)">Investment Areas</a>
+      <a href="#approach" data-navtab="" style="text-decoration:none; padding:7px 16px; border-radius:999px; border:1px solid transparent; transition:color .3s ease, border-color .45s ease, background-color .45s ease;" style-hover="color:var(--fg)">Our Approach</a>
+      
+    </nav>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <div data-lang-wrap="" style="position:relative;">
+        <button data-lang-toggle="" onClick="{{ toggleLangMenu }}" style="display:flex; align-items:center; gap:8px; background:transparent; border:1px solid var(--line); border-radius:999px; padding:7px 13px; cursor:pointer; color:var(--fg); font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.08em;" style-hover="border-color:var(--hair)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c2.6 2.8 2.6 15.2 0 18c-2.6-2.8-2.6-15.2 0-18Z"></path></svg>
+          <span data-lang-current="">EN</span>
+          <svg data-lang-caret="" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" style="transition:transform .25s ease;"><path d="M6 9l6 6 6-6"></path></svg>
+        </button>
+        <div data-lang-menu="" style="display:none; position:absolute; top:calc(100% + 10px); right:0; min-width:156px; background:var(--card); border:1px solid var(--line); border-radius:10px; box-shadow:0 14px 34px rgba(0,0,0,.16); padding:5px; z-index:40;">
+          <button data-lang-opt="en" onClick="{{ langEN }}" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">English<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
+          <button data-lang-opt="fr" onClick="{{ langFR }}" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">Français<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
+          <button data-lang-opt="zh" onClick="{{ langZH }}" style="display:flex; align-items:center; justify-content:space-between; gap:14px; width:100%; background:transparent; border:none; cursor:pointer; padding:9px 12px; border-radius:6px; font-family:'Schibsted Grotesk',system-ui,sans-serif; font-size:13.5px; color:var(--fg); text-align:left;" style-hover="background:color-mix(in srgb, var(--fg) 6%, transparent)">中文<span data-check="" style="color:var(--accent); opacity:0;">●</span></button>
+        </div>
+      </div>
+      <a href="#contact" style="display:inline-flex; align-items:center; white-space:nowrap; text-decoration:none; font-size:15px; font-weight:500; color:#1A1A1A; background:var(--accent); padding:11px 20px; border-radius:2px;" style-hover="background:var(--accent-ink)" data-navlinks="">Book a consultation</a>
+      <button onClick="{{ toggleTheme }}" aria-label="Toggle day or night" style="display:flex; align-items:center; gap:7px; background:transparent; border:1px solid var(--line); border-radius:999px; padding:5px 7px; cursor:pointer; color:var(--fg);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" fill="currentColor"></circle><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2.4v2.4M12 19.2V21.6M2.4 12h2.4M19.2 12h2.4M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19"></path></g></svg>
+        <span style="position:relative; width:40px; height:18px; border-radius:999px; background:var(--line); display:inline-block;">
+          <span data-knob="" style="position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:var(--accent); transition:transform .35s cubic-bezier(.4,0,.2,1);"></span>
+        </span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8 8 0 0 1 9.5 4 6.5 6.5 0 1 0 20 14.5Z" fill="currentColor"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- TOP DISSOLVE: content fades into the background just before the nav line -->
+  <div style="position:fixed; top:0; left:0; right:0; height:118px; z-index:10; pointer-events:none; background:linear-gradient(to bottom, var(--bg) 0%, var(--bg) 32%, color-mix(in srgb, var(--bg) 78%, transparent) 60%, color-mix(in srgb, var(--bg) 38%, transparent) 82%, rgba(0,0,0,0) 100%);"></div>
+
+  <!-- CONTENT -->
+  <div style="position:relative; z-index:1; overflow-x:clip;">
+
+    <!-- ================= HERO ================= -->
+    <section id="top" data-mode="hero" data-screen-label="Hero" style="position:relative; min-height:auto; display:flex; flex-direction:column; justify-content:flex-start; padding:240px clamp(20px,6vw,96px) 24px; max-width:1180px;">
+      <div data-reveal="left" style="width:100%;">
+      <div style="display:flex; align-items:center; gap:14px; margin-bottom:30px;">
+        <span style="width:30px; height:1px; background:var(--accent);"></span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.2em; color:var(--muted); white-space:nowrap;">BULLE · CANTON DE FRIBOURG · 46.6193° N&nbsp; 7.0573° E</span>
+      </div>
+      <h1 style="margin: 0; font-size: clamp(27px,4.7vw,64px); line-height: 1.04; font-weight: 500; letter-spacing: -.03em; color: var(--hero-text)">
+        Your Swiss Steward<br><span style="font-style: italic; font-weight: 400; white-space: nowrap;">in legal and investment matters!</span>
+      </h1>
+      <p style="margin:34px 0 0; max-width:640px; font-size:clamp(16px,1.5vw,20px); line-height:1.55; color:var(--muted);">
+        An independent Swiss legal and investment firm in Bulle, providing discreet counsel and strategic guidance for private clients, businesses, real estate actors, and public bodies.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:16px 28px; margin-top:42px;">
+        <a href="#contact" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-size:15px; font-weight:500; color:#1A1A1A; background:var(--accent); padding:15px 26px; border-radius:2px;" style-hover="background:var(--accent-ink)">
+          Book a consultation <span>→</span>
+        </a>
+        <a href="#firm" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-size:15px; font-weight:500; color:var(--fg); padding-bottom:5px; border-bottom:1px solid var(--accent);">
+          Explore the firm
+        </a>
+      </div>
+      </div>
+    </section>
+
+    <!-- ================= WHO WE SERVE ================= -->
+    <section id="serve" data-screen-label="Who we serve" style="position:relative; padding:clamp(88px,11vw,156px) clamp(20px,6vw,96px);">
+      <div style="max-width:1240px; margin:0;" data-reveal="right">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:26px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--accent);">02</span>
+          <span style="width:24px; height:1px; background:var(--line);"></span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">WHO WE SERVE</span>
+        </div>
+        <h2 style="margin:0; max-width:18ch; font-size:clamp(34px,5.4vw,72px); line-height:1.02; font-weight:500; letter-spacing:-.025em; color:var(--hero-text);">One vision,<div>four horizons.</div></h2>
+        <p style="margin: 24px 0 0; max-width: 600px; font-size: 16px; line-height: 1.6; color: var(--muted); text-align: right">Swiss–Invest advises and represents private clients, businesses, real estate actors, and public bodies across legal matters and investment opportunities.&nbsp;</p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:30px 52px; margin-top:54px;">
+          <div style="">
+            
+            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">i. Private Clients &amp; Families</h3>
+            <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.45; color:var(--muted);">
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Divorce, separation &amp; partnership dissolution</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Child custody &amp; parental authority</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Estate &amp; inheritance disputes</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Employment &amp; insurance claims</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Criminal defence &amp; victim assistance</li>
+            </ul>
+          </div>
+          <div style="">
+            
+            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">ii. Businesses &amp; Entrepreneurs</h3>
+            <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.45; color:var(--muted);">
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Commercial contracts &amp; negotiations</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Company law — SA &amp; Sàrl matters</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>M&amp;A &amp; corporate restructuring</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>IP &amp; unfair competition</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Commercial litigation &amp; bankruptcy</li>
+            </ul>
+          </div>
+          <div style="">
+            
+            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">iii. Real Estate &amp; Construction</h3>
+            <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.45; color:var(--muted);">
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Lease &amp; rental law</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Construction contracts &amp; SIA standards</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Building defect &amp; warranty disputes</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Transactions &amp; conveyancing</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Spatial &amp; urban planning</li>
+            </ul>
+          </div>
+          <div style="">
+            
+            <h3 style="margin:6px 0 12px; font-size:16px; font-weight:600; letter-spacing:-.01em;">iv. Public &amp; Administrative</h3>
+            <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.45; color:var(--muted);">
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Municipal law &amp; procedures</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Public procurement &amp; tendering</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Residence permits &amp; immigration</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Tax &amp; fiscal disputes</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Administrative appeals</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= INVESTMENTS (pillar) ================= -->
+    <section id="investments" data-mode="wake" data-screen-label="Investments" style="position:relative; padding:clamp(88px,11vw,156px) clamp(20px,6vw,96px);">
+      <div style="max-width:1240px; margin:0;" data-reveal="left">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:30px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--accent);">03</span>
+          <span style="width:24px; height:1px; background:var(--line);"></span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">INVESTMENT ADVISORY</span>
+        </div>
+        <h2 style="margin: 0; max-width: 16ch; font-size: clamp(34px,5.4vw,72px); line-height: 1.02; font-weight: 500; letter-spacing: -.025em; color: var(--hero-text); text-align: left">Curated, confidential, often off the market.</h2>
+        <p style="margin: 30px 0 0; max-width: 540px; font-size: clamp(16px,1.4vw,19px); line-height: 1.6; color: var(--muted); text-align: left; width: 100%; height: 100%">We identify, select, and present high-quality opportunities across three core sectors — drawing on an established network of investors, business owners, and specialists.</p><p></p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:28px 44px; margin-top:64px;">
+          <div>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; color:var(--accent);">01 — BUSINESS</span>
+            <h3 style="margin:12px 0 0; font-size:16px; font-weight:600; letter-spacing:-.01em;">Business Investments</h3>
+            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Swiss and international companies with strong development, succession, or value-creation potential.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Acquisitions &amp; sales</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Shareholdings</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Succession</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">SME &amp; capital intro</span>
+            </div>
+          </div>
+          <div>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; color:var(--accent);">02 — REAL ESTATE</span>
+            <h3 style="margin:12px 0 0; font-size:16px; font-weight:600; letter-spacing:-.01em;">Real Estate Investments</h3>
+            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Swiss property aligned with each client's financial, strategic, and wealth-management objectives.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Residential</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Commercial &amp; mixed-use</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Development land</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Off-market</span>
+            </div>
+          </div>
+          <div>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; color:var(--accent);">03 — PRICELESS ASSETS</span>
+            <h3 style="margin:12px 0 0; font-size:16px; font-weight:600; letter-spacing:-.01em;">Art &amp; Collectible Assets</h3>
+            <p style="margin:9px 0 16px; font-size:13.5px; line-height:1.55; color:var(--muted);">Prestige assets and collectibles as alternative investment vehicles and diversification instruments.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Fine art</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Watches &amp; jewellery</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Rare &amp; historical</span>
+              <span style="font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:4px 10px;">Private collections</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APPROACH (pillar) ================= -->
+    <section id="approach" data-mode="horizon" data-screen-label="Approach" style="position:relative; padding:clamp(88px,11vw,156px) clamp(20px,6vw,96px);">
+      <div style="max-width:1240px; margin:0;" data-reveal="right">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:30px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--accent);">04</span>
+          <span style="width:24px; height:1px; background:var(--line);"></span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">OUR APPROACH</span>
+        </div>
+        <h2 style="margin:0; font-size:clamp(34px,5.4vw,72px); line-height:1.02; font-weight:500; letter-spacing:-.025em; color:var(--hero-text);">Set the course,&nbsp;<div>trim the risk,&nbsp;<span style="color: var(--hero-text); font-size: clamp(34px, 5.4vw, 72px); letter-spacing: -0.025em;">and&nbsp;</span></div><div><span style="color: var(--hero-text); font-size: clamp(34px, 5.4vw, 72px); letter-spacing: -0.025em;">steer toward value.</span></div></h2>
+        
+
+        <p style="margin:24px 0 0; max-width:600px; font-size:16px; line-height:1.6; color:var(--muted);">Every mandate follows the same discipline — careful analysis before action, and a measured judgement of risk against long-term consequence.&nbsp;</p><p></p><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:30px 52px; margin-top:56px;">
+          <div style="">
+            <div style="display:flex; align-items:baseline; gap:12px;"><h3 style="margin:0; font-size:18px; font-weight:600;">Strategic Foresight</h3></div>
+            <p style="margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--muted);">Decisions weighed for their lasting consequences, not just the immediate term.</p>
+          </div>
+          <div style="">
+            <div style="display:flex; align-items:baseline; gap:12px;"><h3 style="margin:0; font-size:18px; font-weight:600;">Legal Rigour</h3></div>
+            <p style="margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--muted);">Facts, documents, obligations, and procedural risk examined before any recommendation.</p>
+          </div>
+          <div style="">
+            <div style="display:flex; align-items:baseline; gap:12px;"><h3 style="margin:0; font-size:18px; font-weight:600;">Selective Discipline</h3></div>
+            <p style="margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--muted);">Only opportunities with genuine value-creation potential, matched to each profile.</p>
+          </div>
+          <div style="">
+            <div style="display:flex; align-items:baseline; gap:12px;"><h3 style="margin:0; font-size:18px; font-weight:600;">Focused Commitment</h3></div>
+            <p style="margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--muted);">Each mandate handled individually — never treated as a routine file.</p>
+          </div>
+          <div style="">
+            <div style="display:flex; align-items:baseline; gap:12px;"><h3 style="margin:0; font-size:18px; font-weight:600;">Discretion</h3></div>
+            <p style="margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--muted);">Attorney–client privilege and strict contractual confidentiality on every matter.</p>
+          </div>
+          <div style="">
+            <div style="display:flex; align-items:baseline; gap:12px;"><h3 style="margin:0; font-size:18px; font-weight:600;">Long-Term Perspective</h3></div>
+            <p style="margin:12px 0 0; font-size:14.5px; line-height:1.55; color:var(--muted);">Sustainable value and wealth preservation over short-term speculation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WHY ================= -->
+    
+
+    <!-- ================= CONTACT ================= -->
+    <section data-screen-label="Why Swiss-Invest" style="position:relative; padding:clamp(88px,11vw,156px) clamp(20px,6vw,96px);">
+      
+    <div style="max-width: 1240px; margin: 0; position: relative" data-reveal="left">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:30px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--accent);">06</span>
+          <span style="width:24px; height:1px; background:var(--line);"></span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">WHY SWISS-INVEST</span>
+        </div>
+        <h2 style="margin:0; max-width:none; font-size:clamp(32px,5vw,64px); line-height:1.06; font-weight:500; letter-spacing:-.025em; color:var(--hero-text);"><p style="position: relative">Independent by nature,<br><span style="color: var(--hero-text); font-size: clamp(32px, 5vw, 64px); letter-spacing: -0.025em;">coordinated by design.</span></p></h2><p style="margin:26px 0 0; max-width:600px; font-size:16px; line-height:1.6; color:var(--muted);">Few firms bring legal counsel and investment advisory under one roof.<br>The advantages below are the ones clients return for.</p><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:36px 48px; margin-top:48px;">
+          <div>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Dual Expertise</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Swiss legal precision and investment-transaction experience within one integrated firm — a single trusted advisor for both.</p>
+          </div>
+          <div>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Curated Access</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Selective, often off-market opportunities sourced through an established network across Switzerland.</p>
+          </div>
+          <div>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Qualified Network</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Direct reach into investors, entrepreneurs, real estate professionals, and asset specialists — Swiss and international.</p>
+          </div>
+          <div>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Strict Confidentiality</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Every mandate handled with the highest professional secrecy and respect for attorney–client privilege.</p>
+          </div>
+          <div>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Tailored Approach</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Every engagement structured around the client's specific objectives, risk profile, and long-term interests.</p>
+          </div>
+          <div>
+            <h3 style="margin:0 0 10px; font-size:19px; font-weight:600;">Independence</h3>
+            <p style="margin:0; font-size:15px; line-height:1.6; color:var(--muted);">Full professional independence, in compliance with Swiss privilege and the rules of the Fribourg Bar.</p>
+          </div>
+        </div>
+      </div></section><section id="contact" data-mode="harbor" data-screen-label="Contact" style="position:relative; padding:clamp(88px,11vw,156px) clamp(20px,6vw,96px);">
+      <div style="max-width:1240px; margin:0;" data-reveal="right">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:30px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--accent);">07</span>
+          <span style="width:24px; height:1px; background:var(--line);"></span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--muted);">CONTACT</span>
+        </div>
+        <h2 style="margin:0; max-width:16ch; font-size:clamp(34px,5.4vw,72px); line-height:1.02; font-weight:500; letter-spacing:-.025em; color:var(--hero-text);">Get in touch!</h2>
+        <p style="margin:30px 0 56px; max-width:560px; font-size:clamp(16px,1.4vw,19px); line-height:1.6; color:var(--muted);"><span style="color: var(--muted); font-size: clamp(16px, 1.4vw, 19px);">Two initial consultations —<br>for legal matters, and investment mandates.<br>Both by appointment, both in strict confidence.</span></p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px 52px;">
+          <div style="">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--accent);">LEGAL CONSULTATION</span>
+            <p style="margin:18px 0 0; font-size:15.5px; line-height:1.6; color:var(--muted);">An initial personalised legal assessment with the team at our office in Bulle.</p>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:24px; font-size:14.5px; color:var(--fg);">
+              <div style="display:flex; justify-content:space-between; gap:16px; padding-bottom:10px; border-bottom:1px solid var(--line);"><span style="color:var(--muted);">Hours</span><span>Mon–Thu · 16:30–18:00</span></div>
+              <div style="display:flex; justify-content:space-between; gap:16px; padding-bottom:10px; border-bottom:1px solid var(--line);"><span style="color:var(--muted);">Fee</span><span>CHF 30 · 30 minutes</span></div>
+              <div style="display:flex; justify-content:space-between; gap:16px;"><span style="color:var(--muted);">Booking</span><span>By appointment</span></div>
+            </div>
+          </div>
+          <div style="">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--accent);">INVESTMENT CONSULTATION</span>
+            <p style="margin:18px 0 0; font-size:15.5px; line-height:1.6; color:var(--muted);">A confidential discussion of objectives, acquisition plans, or divestment projects.</p>
+            <ul style="margin:24px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:11px; font-size:14.5px; line-height:1.45; color:var(--muted);">
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Understand your objectives &amp; investor profile</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Review an existing opportunity or project</li>
+              <li style="display:flex; gap:10px;"><span style="color:var(--accent);">—</span>Define suitable criteria &amp; next steps</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:24px; margin-top:48px; padding:28px clamp(24px,3vw,40px); border:1px solid var(--line); background:var(--card);">
+          <div>
+            <div style="font-size:17px; font-weight:600;">Swiss-Invest — Legal &amp; Investment Advisory</div>
+            <div style="margin-top:6px; font-size:14.5px; color:var(--muted);">Avenue de la Gare 8, 1630 Bulle, Canton de Fribourg · swiss-invest.com</div>
+          </div>
+          <a href="#contact" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-size:15px; font-weight:500; color:#1A1A1A; background:var(--accent); padding:15px 28px; border-radius:2px; white-space:nowrap;" style-hover="background:var(--accent-ink)">Request an appointment <span>→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer style="position:relative; background:var(--bg); border-top:1px solid var(--line); padding:clamp(88px,11vw,156px) clamp(20px,6vw,96px) 40px;">
+      <div style="max-width:1480px; margin:0 auto;">
+        <!-- FOOTER MAIN ROW: identity · details · FAQ -->
+        <div style="display:flex; flex-wrap:wrap; gap:clamp(40px,5vw,72px); justify-content:space-between; align-items:flex-start; margin-bottom:48px; padding-bottom:44px; border-bottom:1px solid var(--line);">
+
+          <!-- identity -->
+          <div style="max-width:360px;">
+            <img data-logo="light" src="assets/logo-light.svg" alt="XR-SwissInvest" style="height:34px; width:auto; display:block;">
+            <img data-logo="dark" src="assets/logo-dark.svg" alt="XR-SwissInvest" style="height:34px; width:auto; display:block;">
+            <p style="margin:20px 0 0; font-size:14.5px; line-height:1.6; color:var(--muted);">Precision. Discretion. Lasting value. An independent Swiss legal &amp; investment advisory firm based in Bulle, Canton de Fribourg. We unite rigorous legal counsel with curated, often off-market investment opportunity under a single roof — serving private clients, businesses, real estate actors, and public bodies. Every mandate is handled in strict confidence, with the long-term interests of the client at its centre.</p>
+          </div>
+
+          <!-- consultations + office (stacked) -->
+          <div style="display:flex; flex-direction:column; gap:32px;">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--muted); margin-bottom:16px;">CONSULTATIONS</div>
+              <div style="font-size:14.5px; line-height:1.7; color:var(--fg);">Legal · Mon–Thu 16:30–18:00<br>Investment · By appointment<br>swiss-invest.com</div>
+            </div>
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--muted); margin-bottom:16px;">OFFICE</div>
+              <div style="font-size:14.5px; line-height:1.7; color:var(--fg);">Avenue de la Gare 8<br>1630 Bulle<br>Canton de Fribourg, Switzerland</div>
+            </div>
+          </div>
+
+          <!-- FAQ (compact, right) -->
+          <div style="flex:1; min-width:320px; max-width:440px;">
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
+              <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.2em; color:var(--accent);">FREQUENTLY ASKED</span>
+              <span style="flex:1; height:1px; background:var(--line);"></span>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+            <details style="border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Are all exchanges with the lawyer confidential?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
+              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Yes. All exchanges are covered by professional secrecy (attorney–client privilege) and handled with strict confidentiality in accordance with Swiss Bar rules and applicable law.</p>
+            </details>
+            <details style="border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Can a dispute be resolved without going to court?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
+              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Where appropriate, the firm can negotiate, mediate, or facilitate conciliation on your behalf — before, during, or instead of formal court proceedings.</p>
+            </details>
+            <details style="border-bottom:1px solid var(--line);">
+              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Do I need an appointment for a legal consultation?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
+              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Yes. All consultations are by appointment so the firm can review your situation in advance. Legal consultations are available Monday to Thursday, 16:30–18:00, at a fixed fee of CHF 30 for 30 minutes.</p>
+            </details>
+            <details style="border-bottom:1px solid var(--line);">
+              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">What investment opportunities does Swiss-Invest facilitate?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
+              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Primarily transactions involving Swiss companies (acquisitions, sales, shareholdings), Swiss real estate (residential, commercial, development land), and alternative assets including fine art, collectible watches, jewellery, and private collections.</p>
+            </details>
+            <details style="border-bottom:1px solid var(--line);">
+              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Are the investment opportunities publicly available?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
+              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Some are publicly available, while a significant number originate from private networks and off-market transactions accessible exclusively through the firm's established network.</p>
+            </details>
+            <details style="border-bottom:1px solid var(--line);">
+              <summary style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0; cursor:pointer; font-size:12px; font-weight:500;">Do you work with international investors?<span data-plus="" style="color:var(--accent); font-size:17px; transition:transform .25s ease; flex:none;">+</span></summary>
+              <p style="margin:0; padding:0 0 12px; font-size:11.5px; line-height:1.5; color:var(--muted);">Yes. Swiss-Invest assists both Swiss and international investors and clients seeking legal or investment advisory services in Switzerland.</p>
+            </details>
+            </div>
+          </div>
+
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:16px; justify-content:space-between; align-items:center; margin-top:56px; padding-top:24px; border-top:1px solid var(--line); font-size:12.5px; color:var(--muted);">
+          <span>© 2025 Swiss-Invest. All rights reserved.</span>
+          <span style="font-family:'JetBrains Mono',monospace; letter-spacing:.14em;">AVOCAT AU BARREAU · FRIBOURG</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- FIXED NAVIGATION NEEDLE (bottom-right, persistent) -->
+  <div data-compass="" style="position:fixed; right:clamp(16px,3vw,32px); bottom:clamp(16px,3vw,28px); z-index:15; display:flex; flex-direction:column; align-items:center; gap:9px; pointer-events:none;">
+    <div style="position:relative; width:74px; height:74px; border-radius:50%; border:1px solid var(--line); background:color-mix(in srgb, var(--bg) 72%, transparent); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);">
+      <span style="position:absolute; top:4px; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--muted);">N</span>
+      <span style="position:absolute; bottom:4px; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--muted);">S</span>
+      <span style="position:absolute; top:50%; left:5px; transform:translateY(-50%); font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--muted);">W</span>
+      <span style="position:absolute; top:50%; right:5px; transform:translateY(-50%); font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--muted);">E</span>
+      <span ref="{{ needleRef }}" style="position:absolute; top:50%; left:50%; width:2px; height:48px; transform:translate(-50%,-50%) rotate(20deg); transform-origin:center center; background:linear-gradient(var(--accent) 0%, var(--accent) 48%, var(--hair) 52%, var(--hair) 100%); border-radius:2px;"></span>
+      <span style="position:absolute; top:50%; left:50%; width:6px; height:6px; transform:translate(-50%,-50%); border-radius:50%; background:var(--fg);"></span>
+    </div>
+    <span style="font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.2em; color:var(--muted);">ON BEARING</span>
+  </div>
+
+  <!-- CUSTOM CURSOR -->
+  <div ref="{{ cursorRef }}" style="position: fixed; left: 78px; top: 2px; z-index: 60; pointer-events: none; transform: translate(-300px,-300px); will-change: transform; width: 8px; height: 8px">
+    <div ref="{{ cRingRef }}" style="position:absolute; left:0; top:0; width:36px; height:36px; margin:-18px 0 0 -18px; border:1px solid var(--accent); border-radius:50%; transition:width .22s ease, height .22s ease, margin .22s ease, opacity .22s ease;">
+      <span style="position:absolute; top:-5px; left:50%; width:1px; height:5px; transform:translateX(-50%); background:var(--accent);"></span>
+      <span style="position:absolute; bottom:-5px; left:50%; width:1px; height:5px; transform:translateX(-50%); background:var(--accent);"></span>
+      <span style="position:absolute; left:-5px; top:50%; width:5px; height:1px; transform:translateY(-50%); background:var(--accent);"></span>
+      <span style="position:absolute; right:-5px; top:50%; width:5px; height:1px; transform:translateY(-50%); background:var(--accent);"></span>
+    </div>
+    <span style="position:absolute; left:-9px; top:0; width:18px; height:1px; transform:translateY(-50%); background:var(--hair); opacity:.45;"></span>
+    <span style="position:absolute; top:-9px; left:0; width:1px; height:18px; transform:translateX(-50%); background:var(--hair); opacity:.45;"></span>
+    <span ref="{{ cNeedleRef }}" style="position:absolute; left:0; top:0; width:2px; height:24px; margin:-12px 0 0 -1px; transform:rotate(0deg); transform-origin:center center; background:linear-gradient(var(--accent) 0%, var(--accent) 46%, rgba(0,0,0,0) 54%);"></span>
+    <span style="position: absolute; left: -5px; top: 0; width: 8px; height: 8px; margin: -1.5px 0 0 -1.5px; border-radius: 50%; background: var(--accent)"></span>
+    <span ref="{{ cBearingRef }}" style="position:absolute; left:28px; top:-24px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em; color:var(--accent); opacity:0; transition:opacity .22s ease; white-space:nowrap;">000°</span>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#eed8a0&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#E0BC63&quot;,&quot;#C8A24B&quot;,&quot;#1F4FA0&quot;,&quot;#14161A&quot;]},&quot;startDark&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  chartRef = React.createRef();
+  rootRef = React.createRef();
+  needleRef = React.createRef();
+  cursorRef = React.createRef();
+  cRingRef = React.createRef();
+  cNeedleRef = React.createRef();
+  cBearingRef = React.createRef();
+  state = { dark: false, lang: 'en' };
+
+  componentDidMount() {
+    this.mouse = { cx: -9999, cy: -9999, active: false, clientX: -300, clientY: -300 };
+    this.cur = { x: -300, y: -300, heading: 0, mode: 'idle' };
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const startDark = !!this.props.startDark;
+    this.applyTheme(startDark);
+    if (startDark) this.setState({ dark: true });
+    if (this.props.accent) this.rootRef.current.style.setProperty('--accent', this.props.accent);
+
+    // language
+    this.initI18n();
+    let savedLang = 'en';
+    try { savedLang = localStorage.getItem('xr_lang') || 'en'; } catch (e) {}
+    if (!['en','fr','zh'].includes(savedLang)) savedLang = 'en';
+    this.translateAll(savedLang);
+    if (savedLang !== 'en') this.setState({ lang: savedLang });
+    else this.updateLangUI('en');
+    this.langMenuOpen = false;
+    this._onDocClick = (e) => {
+      if (this.langMenuOpen && !(e.target.closest && e.target.closest('[data-lang-wrap]'))) this.closeLangMenu();
+    };
+    document.addEventListener('click', this._onDocClick);
+
+    const cv = this.chartRef.current;
+    this.bctx = cv.getContext('2d');
+    // compass-rose anchor points (normalised) — biased right/centre, clear of the headline
+    this.roseDefs = [
+      { nx: 0.80, ny: 0.30 },
+      { nx: 0.33, ny: 0.70 },
+      { nx: 0.58, ny: 0.13 },
+      { nx: 0.07, ny: 0.42 },
+      { nx: 0.93, ny: 0.82 },
+    ];
+    this.roses = [];
+    this.chartHX = null; this.chartHY = null; this.chartDirty = false; this.lastChartDraw = 0;
+    this.resize();
+
+    this._onResize = () => { this.resize(); };
+    window.addEventListener('resize', this._onResize);
+
+    this._onMove = (e) => {
+      const pt = e.touches ? e.touches[0] : e;
+      const r = cv.getBoundingClientRect();
+      this.mouse.cx = pt.clientX - r.left;
+      this.mouse.cy = pt.clientY - r.top;
+      this.mouse.active = true;
+      this.mouse.clientX = pt.clientX;
+      this.mouse.clientY = pt.clientY;
+      this.chartHX = this.mouse.cx; this.chartHY = this.mouse.cy; this.chartDirty = true;
+      this.updateNeedle(pt.clientX, pt.clientY);
+    };
+    this._onLeave = () => { this.mouse.active = false; this.chartHX = null; this.chartHY = null; this.chartDirty = true; };
+    window.addEventListener('mousemove', this._onMove);
+    window.addEventListener('touchmove', this._onMove, { passive: true });
+    window.addEventListener('mouseout', this._onLeave);
+
+    // Per-section particle mode + reveal are driven from the rAF loop
+    // (IntersectionObserver is unreliable in some embed runtimes).
+    this.modeSections = Array.from(this.rootRef.current.querySelectorAll('[data-mode]')).map((el) => ({ el, mode: el.dataset.mode }));
+
+    // Nav tabs: light-gold ring follows the section in view
+    this.navTabs = Array.from(this.rootRef.current.querySelectorAll('[data-navtab]')).map((el) => {
+      const id = (el.getAttribute('href') || '').replace('#', '');
+      return { el, section: id ? this.rootRef.current.querySelector('#' + id) : null };
+    }).filter((t) => t.section);
+    this.activeTab = null;
+
+    // Sections reveal from the sides, scroll-linked (long travel for a smooth glide)
+    this.revealDist = () => Math.min(300, window.innerWidth * 0.22);
+    this.revealEls = Array.from(this.rootRef.current.querySelectorAll('[data-reveal]')).map((el) => {
+      const d = el.getAttribute('data-reveal');
+      return { el, sx: d === 'right' ? 1 : d === 'left' ? -1 : 0, sy: d === 'up' ? 1 : 0 };
+    });
+    if (this.reduced) {
+      this.revealEls.forEach((r) => { r.el.style.opacity = '1'; r.el.style.transform = 'none'; });
+    } else {
+      const dist = this.revealDist();
+      this.revealEls.forEach((r) => {
+        r.el.style.opacity = '0';
+        r.el.style.transform = 'translate3d(' + (r.sx * dist) + 'px,' + (r.sy * 40) + 'px,0)';
+        r.el.style.willChange = 'opacity, transform';
+      });
+    }
+    this.revealStart = (window.performance && performance.now) ? performance.now() : Date.now();
+
+    // Header staggered slide-up on load (rAF-driven)
+    const navEls = Array.from(this.rootRef.current.querySelectorAll('header a, header button'));
+    this.riseEls = navEls.map((el, i) => ({ el, delay: 150 + i * 80 }));
+    if (this.reduced) {
+      this.riseEls.forEach((r) => { r.el.style.opacity = '1'; r.el.style.transform = 'none'; });
+      this.riseEls = null;
+    } else {
+      this.riseEls.forEach((r) => { r.el.style.opacity = '0'; r.el.style.transform = 'translateY(20px)'; r.el.style.willChange = 'opacity, transform'; });
+      this.riseStart = (window.performance && performance.now) ? performance.now() : Date.now();
+    }
+
+    const fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    if (fine) this.rootRef.current.setAttribute('data-cursor', 'on');
+    else if (this.cursorRef.current) this.cursorRef.current.style.display = 'none';
+
+    this._onOver = (e) => {
+      const t = e.target;
+      let mode = 'idle';
+      if (t.closest && t.closest('a,button,summary')) mode = 'lock';
+      else if (t.closest && t.closest('h1,h2,h3,p,li')) mode = 'text';
+      this.setCursorMode(mode);
+    };
+    this.rootRef.current.addEventListener('mouseover', this._onOver, true);
+
+    this._onVis = () => {
+      if (document.hidden) { cancelAnimationFrame(this.raf); this.raf = null; }
+      else if (!this.raf) { this.raf = requestAnimationFrame(this.loop); }
+    };
+    document.addEventListener('visibilitychange', this._onVis);
+
+    this.loop = this.loop.bind(this);
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
+  componentDidUpdate(prev) {
+    if (prev.accent !== this.props.accent && this.props.accent) {
+      this.rootRef.current.style.setProperty('--accent', this.props.accent);
+      if (this.bctx) this.drawChart(this.chartHX, this.chartHY);
+    }
+    // React re-render restores the authored English literals — re-apply the active language
+    this.translateAll(this.state.lang);
+    // ...and restores the menu's hardcoded display:none — re-assert if it should be open
+    this.applyLangMenu();
+  }
+
+  applyLangMenu() {
+    const root = this.rootRef.current; if (!root) return;
+    const menu = root.querySelector('[data-lang-menu]');
+    const caret = root.querySelector('[data-lang-caret]');
+    if (menu) menu.style.display = this.langMenuOpen ? 'block' : 'none';
+    if (caret) caret.style.transform = this.langMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+
+  initI18n() {
+    const data = this.i18nData();
+    this.dicts = { fr: data.fr, zh: data.zh };
+    this.toEN = {};
+    for (const en in data.fr) this.toEN[en] = en;
+    for (const en in data.fr) { const v = data.fr[en]; if (v) this.toEN[v] = en; }
+    for (const en in data.zh) { const v = data.zh[en]; if (v) this.toEN[v] = en; }
+    this.i18nReady = true;
+  }
+
+  translateAll(lang) {
+    if (!this.i18nReady || !this.rootRef.current) return;
+    const dict = lang === 'en' ? null : this.dicts[lang];
+    const walker = document.createTreeWalker(this.rootRef.current, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      const raw = node.nodeValue;
+      const m = raw.match(/^(\s*)([\s\S]*?)(\s*)$/);
+      if (!m) continue;
+      const core = m[2].replace(/\u00a0/g, ' ').trim();
+      if (!core) continue;
+      const en = this.toEN[core];
+      if (en === undefined) continue;
+      const target = (lang === 'en') ? en : (dict[en] || en);
+      const next = m[1] + target + m[3];
+      if (node.nodeValue !== next) node.nodeValue = next;
+    }
+    this.updateLangUI(lang);
+    try { document.documentElement.lang = lang; } catch (e) {}
+  }
+
+  updateLangUI(lang) {
+    const root = this.rootRef.current; if (!root) return;
+    const cur = root.querySelector('[data-lang-current]');
+    if (cur) cur.textContent = ({ en: 'EN', fr: 'FR', zh: '中文' })[lang] || 'EN';
+    root.querySelectorAll('[data-lang-opt]').forEach((b) => {
+      const on = b.getAttribute('data-lang-opt') === lang;
+      b.style.background = on ? 'color-mix(in srgb, var(--accent) 13%, transparent)' : 'transparent';
+      b.style.fontWeight = on ? '600' : '400';
+      const c = b.querySelector('[data-check]');
+      if (c) c.style.opacity = on ? '1' : '0';
+    });
+  }
+
+  openLangMenu() {
+    this.langMenuOpen = true;
+    this.applyLangMenu();
+  }
+  closeLangMenu() {
+    this.langMenuOpen = false;
+    this.applyLangMenu();
+  }
+  toggleLangMenu = (e) => {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (this.langMenuOpen) this.closeLangMenu(); else this.openLangMenu();
+  };
+
+  i18nData() {
+    return {
+      fr: {
+        "About Us": "À propos",
+        "Who We Serve": "Qui nous servons",
+        "Investment Areas": "Domaines d'investissement",
+        "Our Approach": "Notre approche",
+        "Book a consultation": "Prendre rendez-vous",
+        "Your Swiss Steward": "Votre intendant suisse",
+        "in legal and investment matters!": "en matière juridique et d'investissement !",
+        "An independent Swiss legal and investment firm in Bulle, providing discreet counsel and strategic guidance for private clients, businesses, real estate actors, and public bodies.": "Un cabinet suisse indépendant de droit et d'investissement à Bulle, offrant conseil discret et accompagnement stratégique aux particuliers, entreprises, acteurs immobiliers et collectivités publiques.",
+        "Explore the firm": "Découvrir le cabinet",
+        "WHO WE SERVE": "QUI NOUS SERVONS",
+        "One vision,": "Une vision,",
+        "four horizons.": "quatre horizons.",
+        "Swiss–Invest advises and represents private clients, businesses, real estate actors, and public bodies across legal matters and investment opportunities.": "Swiss–Invest conseille et représente les particuliers, les entreprises, les acteurs immobiliers et les collectivités publiques, tant en matière juridique que d'opportunités d'investissement.",
+        "i. Private Clients & Families": "i. Particuliers & familles",
+        "Divorce, separation & partnership dissolution": "Divorce, séparation & dissolution de partenariat",
+        "Child custody & parental authority": "Garde d'enfants & autorité parentale",
+        "Estate & inheritance disputes": "Successions & litiges héréditaires",
+        "Employment & insurance claims": "Droit du travail & prétentions d'assurance",
+        "Criminal defence & victim assistance": "Défense pénale & aide aux victimes",
+        "ii. Businesses & Entrepreneurs": "ii. Entreprises & entrepreneurs",
+        "Commercial contracts & negotiations": "Contrats commerciaux & négociations",
+        "Company law — SA & Sàrl matters": "Droit des sociétés — SA & Sàrl",
+        "M&A & corporate restructuring": "Fusions-acquisitions & restructurations",
+        "IP & unfair competition": "Propriété intellectuelle & concurrence déloyale",
+        "Commercial litigation & bankruptcy": "Contentieux commercial & faillite",
+        "iii. Real Estate & Construction": "iii. Immobilier & construction",
+        "Lease & rental law": "Droit du bail & location",
+        "Construction contracts & SIA standards": "Contrats de construction & normes SIA",
+        "Building defect & warranty disputes": "Défauts de construction & litiges de garantie",
+        "Transactions & conveyancing": "Transactions & actes notariés",
+        "Spatial & urban planning": "Aménagement du territoire & urbanisme",
+        "iv. Public & Administrative": "iv. Public & administratif",
+        "Municipal law & procedures": "Droit communal & procédures",
+        "Public procurement & tendering": "Marchés publics & appels d'offres",
+        "Residence permits & immigration": "Permis de séjour & immigration",
+        "Tax & fiscal disputes": "Litiges fiscaux & impôts",
+        "Administrative appeals": "Recours administratifs",
+        "INVESTMENT ADVISORY": "CONSEIL EN INVESTISSEMENT",
+        "Curated, confidential, often off the market.": "Sélectionné, confidentiel, souvent hors marché.",
+        "We identify, select, and present high-quality opportunities across three core sectors — drawing on an established network of investors, business owners, and specialists.": "Nous identifions, sélectionnons et présentons des opportunités de premier ordre dans trois secteurs clés — en nous appuyant sur un réseau établi d'investisseurs, de dirigeants et de spécialistes.",
+        "01 — BUSINESS": "01 — ENTREPRISES",
+        "Business Investments": "Investissements d'entreprise",
+        "Swiss and international companies with strong development, succession, or value-creation potential.": "Des entreprises suisses et internationales à fort potentiel de développement, de succession ou de création de valeur.",
+        "Acquisitions & sales": "Acquisitions & ventes",
+        "Shareholdings": "Participations",
+        "Succession": "Succession",
+        "SME & capital intro": "PME & mise en relation de capitaux",
+        "02 — REAL ESTATE": "02 — IMMOBILIER",
+        "Real Estate Investments": "Investissements immobiliers",
+        "Swiss property aligned with each client's financial, strategic, and wealth-management objectives.": "Des biens immobiliers suisses en adéquation avec les objectifs financiers, stratégiques et patrimoniaux de chaque client.",
+        "Residential": "Résidentiel",
+        "Commercial & mixed-use": "Commercial & mixte",
+        "Development land": "Terrains à bâtir",
+        "Off-market": "Hors marché",
+        "03 — PRICELESS ASSETS": "03 — ACTIFS D'EXCEPTION",
+        "Art & Collectible Assets": "Art & actifs de collection",
+        "Prestige assets and collectibles as alternative investment vehicles and diversification instruments.": "Des actifs de prestige et objets de collection comme véhicules d'investissement alternatifs et instruments de diversification.",
+        "Fine art": "Œuvres d'art",
+        "Watches & jewellery": "Montres & joaillerie",
+        "Rare & historical": "Rares & historiques",
+        "Private collections": "Collections privées",
+        "OUR APPROACH": "NOTRE APPROCHE",
+        "Set the course,": "Fixez le cap,",
+        "trim the risk,": "réduisez le risque,",
+        "and": "et",
+        "steer toward value.": "cap sur la valeur.",
+        "Every mandate follows the same discipline — careful analysis before action, and a measured judgement of risk against long-term consequence.": "Chaque mandat suit la même discipline — une analyse attentive avant d'agir, et une appréciation mesurée du risque face aux conséquences à long terme.",
+        "Strategic Foresight": "Vision stratégique",
+        "Decisions weighed for their lasting consequences, not just the immediate term.": "Des décisions pesées pour leurs conséquences durables, et pas seulement à court terme.",
+        "Legal Rigour": "Rigueur juridique",
+        "Facts, documents, obligations, and procedural risk examined before any recommendation.": "Faits, documents, obligations et risques de procédure examinés avant toute recommandation.",
+        "Selective Discipline": "Discipline sélective",
+        "Only opportunities with genuine value-creation potential, matched to each profile.": "Uniquement des opportunités au véritable potentiel de création de valeur, adaptées à chaque profil.",
+        "Focused Commitment": "Engagement ciblé",
+        "Each mandate handled individually — never treated as a routine file.": "Chaque mandat est traité individuellement — jamais comme un dossier de routine.",
+        "Discretion": "Discrétion",
+        "Attorney–client privilege and strict contractual confidentiality on every matter.": "Le secret professionnel et une stricte confidentialité contractuelle sur chaque dossier.",
+        "Long-Term Perspective": "Perspective à long terme",
+        "Sustainable value and wealth preservation over short-term speculation.": "Valeur durable et préservation du patrimoine plutôt que spéculation à court terme.",
+        "WHY SWISS-INVEST": "POURQUOI SWISS-INVEST",
+        "Independent by nature,": "Indépendant par nature,",
+        "coordinated by design.": "coordonné par conception.",
+        "Few firms bring legal counsel and investment advisory under one roof.": "Peu de cabinets réunissent conseil juridique et conseil en investissement sous un même toit.",
+        "The advantages below are the ones clients return for.": "Les atouts ci-dessous sont ceux pour lesquels les clients reviennent.",
+        "Dual Expertise": "Double expertise",
+        "Swiss legal precision and investment-transaction experience within one integrated firm — a single trusted advisor for both.": "La précision juridique suisse et l'expérience des transactions d'investissement au sein d'un cabinet intégré — un seul conseiller de confiance pour les deux.",
+        "Curated Access": "Accès sélectionné",
+        "Selective, often off-market opportunities sourced through an established network across Switzerland.": "Des opportunités sélectionnées, souvent hors marché, issues d'un réseau établi à travers la Suisse.",
+        "Qualified Network": "Réseau qualifié",
+        "Direct reach into investors, entrepreneurs, real estate professionals, and asset specialists — Swiss and international.": "Un accès direct aux investisseurs, entrepreneurs, professionnels de l'immobilier et spécialistes d'actifs — suisses et internationaux.",
+        "Strict Confidentiality": "Confidentialité stricte",
+        "Every mandate handled with the highest professional secrecy and respect for attorney–client privilege.": "Chaque mandat traité avec le plus haut secret professionnel et le respect du secret de l'avocat.",
+        "Tailored Approach": "Approche sur mesure",
+        "Every engagement structured around the client's specific objectives, risk profile, and long-term interests.": "Chaque mission structurée autour des objectifs propres au client, de son profil de risque et de ses intérêts à long terme.",
+        "Independence": "Indépendance",
+        "Full professional independence, in compliance with Swiss privilege and the rules of the Fribourg Bar.": "Une pleine indépendance professionnelle, conforme au secret suisse et aux règles du Barreau de Fribourg.",
+        "CONTACT": "CONTACT",
+        "Get in touch!": "Contactez-nous !",
+        "Two initial consultations —": "Deux consultations initiales —",
+        "for legal matters, and investment mandates.": "pour les questions juridiques et les mandats d'investissement.",
+        "Both by appointment, both in strict confidence.": "Toutes deux sur rendez-vous, et en toute confidentialité.",
+        "LEGAL CONSULTATION": "CONSULTATION JURIDIQUE",
+        "An initial personalised legal assessment with the team at our office in Bulle.": "Une première évaluation juridique personnalisée avec l'équipe, à notre bureau de Bulle.",
+        "Hours": "Horaires",
+        "Mon–Thu · 16:30–18:00": "Lun–Jeu · 16h30–18h00",
+        "Fee": "Tarif",
+        "CHF 30 · 30 minutes": "CHF 30 · 30 minutes",
+        "Booking": "Réservation",
+        "By appointment": "Sur rendez-vous",
+        "INVESTMENT CONSULTATION": "CONSULTATION D'INVESTISSEMENT",
+        "A confidential discussion of objectives, acquisition plans, or divestment projects.": "Un échange confidentiel sur vos objectifs, projets d'acquisition ou de cession.",
+        "Understand your objectives & investor profile": "Comprendre vos objectifs & votre profil d'investisseur",
+        "Review an existing opportunity or project": "Examiner une opportunité ou un projet existant",
+        "Define suitable criteria & next steps": "Définir des critères adaptés & les prochaines étapes",
+        "Swiss-Invest — Legal & Investment Advisory": "Swiss-Invest — Conseil juridique & en investissement",
+        "Request an appointment": "Demander un rendez-vous",
+        "Precision. Discretion. Lasting value. An independent Swiss legal & investment advisory firm based in Bulle, Canton de Fribourg. We unite rigorous legal counsel with curated, often off-market investment opportunity under a single roof — serving private clients, businesses, real estate actors, and public bodies. Every mandate is handled in strict confidence, with the long-term interests of the client at its centre.": "Précision. Discrétion. Valeur durable. Un cabinet suisse indépendant de conseil juridique et d'investissement établi à Bulle, canton de Fribourg. Nous réunissons un conseil juridique rigoureux et des opportunités d'investissement sélectionnées, souvent hors marché, sous un même toit — au service des particuliers, des entreprises, des acteurs immobiliers et des collectivités publiques. Chaque mandat est traité en toute confidentialité, avec les intérêts à long terme du client au centre.",
+        "CONSULTATIONS": "CONSULTATIONS",
+        "Legal · Mon–Thu 16:30–18:00": "Juridique · Lun–Jeu 16h30–18h00",
+        "Investment · By appointment": "Investissement · Sur rendez-vous",
+        "OFFICE": "BUREAU",
+        "Canton de Fribourg, Switzerland": "Canton de Fribourg, Suisse",
+        "FREQUENTLY ASKED": "QUESTIONS FRÉQUENTES",
+        "Are all exchanges with the lawyer confidential?": "Tous les échanges avec l'avocat sont-ils confidentiels ?",
+        "Yes. All exchanges are covered by professional secrecy (attorney–client privilege) and handled with strict confidentiality in accordance with Swiss Bar rules and applicable law.": "Oui. Tous les échanges sont couverts par le secret professionnel (secret de l'avocat) et traités en stricte confidentialité, conformément aux règles du Barreau suisse et au droit applicable.",
+        "Can a dispute be resolved without going to court?": "Un litige peut-il être résolu sans aller au tribunal ?",
+        "Where appropriate, the firm can negotiate, mediate, or facilitate conciliation on your behalf — before, during, or instead of formal court proceedings.": "Le cas échéant, le cabinet peut négocier, médier ou favoriser une conciliation en votre nom — avant, pendant ou en lieu et place d'une procédure judiciaire formelle.",
+        "Do I need an appointment for a legal consultation?": "Faut-il un rendez-vous pour une consultation juridique ?",
+        "Yes. All consultations are by appointment so the firm can review your situation in advance. Legal consultations are available Monday to Thursday, 16:30–18:00, at a fixed fee of CHF 30 for 30 minutes.": "Oui. Toutes les consultations se font sur rendez-vous afin que le cabinet puisse examiner votre situation au préalable. Les consultations juridiques ont lieu du lundi au jeudi, de 16h30 à 18h00, au tarif fixe de CHF 30 pour 30 minutes.",
+        "What investment opportunities does Swiss-Invest facilitate?": "Quelles opportunités d'investissement Swiss-Invest facilite-t-il ?",
+        "Primarily transactions involving Swiss companies (acquisitions, sales, shareholdings), Swiss real estate (residential, commercial, development land), and alternative assets including fine art, collectible watches, jewellery, and private collections.": "Principalement des transactions portant sur des entreprises suisses (acquisitions, ventes, participations), de l'immobilier suisse (résidentiel, commercial, terrains à bâtir) et des actifs alternatifs : œuvres d'art, montres de collection, joaillerie et collections privées.",
+        "Are the investment opportunities publicly available?": "Les opportunités d'investissement sont-elles accessibles au public ?",
+        "Some are publicly available, while a significant number originate from private networks and off-market transactions accessible exclusively through the firm's established network.": "Certaines sont accessibles au public, mais un nombre important provient de réseaux privés et de transactions hors marché, accessibles exclusivement via le réseau établi du cabinet.",
+        "Do you work with international investors?": "Travaillez-vous avec des investisseurs internationaux ?",
+        "Yes. Swiss-Invest assists both Swiss and international investors and clients seeking legal or investment advisory services in Switzerland.": "Oui. Swiss-Invest assiste les investisseurs et clients suisses comme internationaux à la recherche de services de conseil juridique ou en investissement en Suisse.",
+        "© 2025 Swiss-Invest. All rights reserved.": "© 2025 Swiss-Invest. Tous droits réservés.",
+        "AVOCAT AU BARREAU · FRIBOURG": "AVOCAT AU BARREAU · FRIBOURG",
+        "ON BEARING": "AU CAP"
+      },
+      zh: {
+        "About Us": "关于我们",
+        "Who We Serve": "服务对象",
+        "Investment Areas": "投资领域",
+        "Our Approach": "我们的方式",
+        "Book a consultation": "预约咨询",
+        "Your Swiss Steward": "您的瑞士管家",
+        "in legal and investment matters!": "护航法律与投资事务！",
+        "An independent Swiss legal and investment firm in Bulle, providing discreet counsel and strategic guidance for private clients, businesses, real estate actors, and public bodies.": "一家位于布勒的独立瑞士法律与投资事务所，为私人客户、企业、房地产参与者及公共机构提供审慎的咨询与战略指导。",
+        "Explore the firm": "了解事务所",
+        "WHO WE SERVE": "服务对象",
+        "One vision,": "同一愿景，",
+        "four horizons.": "四种视野。",
+        "Swiss–Invest advises and represents private clients, businesses, real estate actors, and public bodies across legal matters and investment opportunities.": "Swiss–Invest 为私人客户、企业、房地产参与者及公共机构提供法律事务及投资机会方面的咨询与代理。",
+        "i. Private Clients & Families": "i. 私人客户与家庭",
+        "Divorce, separation & partnership dissolution": "离婚、分居与伴侣关系解除",
+        "Child custody & parental authority": "子女监护与亲权",
+        "Estate & inheritance disputes": "遗产与继承纠纷",
+        "Employment & insurance claims": "劳动与保险索赔",
+        "Criminal defence & victim assistance": "刑事辩护与被害人援助",
+        "ii. Businesses & Entrepreneurs": "ii. 企业与企业家",
+        "Commercial contracts & negotiations": "商业合同与谈判",
+        "Company law — SA & Sàrl matters": "公司法 — 股份公司与有限责任公司事务",
+        "M&A & corporate restructuring": "并购与公司重组",
+        "IP & unfair competition": "知识产权与不正当竞争",
+        "Commercial litigation & bankruptcy": "商事诉讼与破产",
+        "iii. Real Estate & Construction": "iii. 房地产与建筑",
+        "Lease & rental law": "租赁法",
+        "Construction contracts & SIA standards": "建筑合同与 SIA 标准",
+        "Building defect & warranty disputes": "建筑缺陷与质保纠纷",
+        "Transactions & conveyancing": "交易与产权转让",
+        "Spatial & urban planning": "国土与城市规划",
+        "iv. Public & Administrative": "iv. 公共与行政",
+        "Municipal law & procedures": "市政法与程序",
+        "Public procurement & tendering": "公共采购与招标",
+        "Residence permits & immigration": "居留许可与移民",
+        "Tax & fiscal disputes": "税务与财政纠纷",
+        "Administrative appeals": "行政申诉",
+        "INVESTMENT ADVISORY": "投资咨询",
+        "Curated, confidential, often off the market.": "甄选、保密，且往往非公开。",
+        "We identify, select, and present high-quality opportunities across three core sectors — drawing on an established network of investors, business owners, and specialists.": "我们在三大核心领域识别、甄选并呈现优质机会——依托由投资者、企业主与专家构成的成熟网络。",
+        "01 — BUSINESS": "01 — 企业",
+        "Business Investments": "企业投资",
+        "Swiss and international companies with strong development, succession, or value-creation potential.": "具有强劲发展、传承或价值创造潜力的瑞士及国际企业。",
+        "Acquisitions & sales": "收购与出售",
+        "Shareholdings": "股权",
+        "Succession": "传承",
+        "SME & capital intro": "中小企业与资本引荐",
+        "02 — REAL ESTATE": "02 — 房地产",
+        "Real Estate Investments": "房地产投资",
+        "Swiss property aligned with each client's financial, strategic, and wealth-management objectives.": "契合每位客户财务、战略与财富管理目标的瑞士物业。",
+        "Residential": "住宅",
+        "Commercial & mixed-use": "商业与综合用途",
+        "Development land": "开发用地",
+        "Off-market": "非公开市场",
+        "03 — PRICELESS ASSETS": "03 — 珍贵资产",
+        "Art & Collectible Assets": "艺术与收藏资产",
+        "Prestige assets and collectibles as alternative investment vehicles and diversification instruments.": "作为另类投资工具与多元化手段的尊贵资产与收藏品。",
+        "Fine art": "艺术品",
+        "Watches & jewellery": "腕表与珠宝",
+        "Rare & historical": "珍稀与历史藏品",
+        "Private collections": "私人收藏",
+        "OUR APPROACH": "我们的方式",
+        "Set the course,": "确定航向，",
+        "trim the risk,": "控制风险，",
+        "and": "并",
+        "steer toward value.": "驶向价值。",
+        "Every mandate follows the same discipline — careful analysis before action, and a measured judgement of risk against long-term consequence.": "每一项委托都遵循同样的准则——行动前审慎分析，并权衡风险与长远影响。",
+        "Strategic Foresight": "战略远见",
+        "Decisions weighed for their lasting consequences, not just the immediate term.": "决策着眼于长远影响，而非仅顾眼前。",
+        "Legal Rigour": "法律严谨",
+        "Facts, documents, obligations, and procedural risk examined before any recommendation.": "在提出任何建议前，详查事实、文件、义务与程序风险。",
+        "Selective Discipline": "审慎甄选",
+        "Only opportunities with genuine value-creation potential, matched to each profile.": "只选择具备真正价值创造潜力、并契合各方需求的机会。",
+        "Focused Commitment": "专注投入",
+        "Each mandate handled individually — never treated as a routine file.": "每项委托均单独处理，绝不视作例行事务。",
+        "Discretion": "审慎保密",
+        "Attorney–client privilege and strict contractual confidentiality on every matter.": "对每一项事务恪守律师保密义务与严格的合同保密。",
+        "Long-Term Perspective": "长期视角",
+        "Sustainable value and wealth preservation over short-term speculation.": "重在可持续价值与财富保全，而非短期投机。",
+        "WHY SWISS-INVEST": "为何选择 SWISS-INVEST",
+        "Independent by nature,": "本质独立，",
+        "coordinated by design.": "协同有道。",
+        "Few firms bring legal counsel and investment advisory under one roof.": "鲜有事务所将法律顾问与投资咨询集于一身。",
+        "The advantages below are the ones clients return for.": "以下优势正是客户一再回访的理由。",
+        "Dual Expertise": "双重专长",
+        "Swiss legal precision and investment-transaction experience within one integrated firm — a single trusted advisor for both.": "在一家一体化事务所内兼具瑞士法律的精准与投资交易的经验——法律与投资共用一位可信顾问。",
+        "Curated Access": "甄选通道",
+        "Selective, often off-market opportunities sourced through an established network across Switzerland.": "通过遍布瑞士的成熟网络获取的甄选机会，且往往非公开市场。",
+        "Qualified Network": "优质网络",
+        "Direct reach into investors, entrepreneurs, real estate professionals, and asset specialists — Swiss and international.": "可直接触及投资者、企业家、房地产专业人士及资产专家——瑞士与国际兼具。",
+        "Strict Confidentiality": "严格保密",
+        "Every mandate handled with the highest professional secrecy and respect for attorney–client privilege.": "每项委托均以最高的职业保密标准处理，并恪守律师保密义务。",
+        "Tailored Approach": "量身定制",
+        "Every engagement structured around the client's specific objectives, risk profile, and long-term interests.": "每项业务均围绕客户的具体目标、风险状况与长远利益而构建。",
+        "Independence": "独立性",
+        "Full professional independence, in compliance with Swiss privilege and the rules of the Fribourg Bar.": "完全的职业独立，遵循瑞士保密制度及弗里堡律师公会规则。",
+        "CONTACT": "联系",
+        "Get in touch!": "与我们联系！",
+        "Two initial consultations —": "两类初步咨询 ——",
+        "for legal matters, and investment mandates.": "分别面向法律事务与投资委托。",
+        "Both by appointment, both in strict confidence.": "均采取预约制，并严格保密。",
+        "LEGAL CONSULTATION": "法律咨询",
+        "An initial personalised legal assessment with the team at our office in Bulle.": "在我们布勒的办公室，由团队提供初步的个性化法律评估。",
+        "Hours": "时间",
+        "Mon–Thu · 16:30–18:00": "周一至周四 · 16:30–18:00",
+        "Fee": "费用",
+        "CHF 30 · 30 minutes": "30 瑞郎 · 30 分钟",
+        "Booking": "预约",
+        "By appointment": "预约制",
+        "INVESTMENT CONSULTATION": "投资咨询",
+        "A confidential discussion of objectives, acquisition plans, or divestment projects.": "就您的目标、收购计划或处置项目进行保密交流。",
+        "Understand your objectives & investor profile": "了解您的目标与投资者画像",
+        "Review an existing opportunity or project": "审视现有机会或项目",
+        "Define suitable criteria & next steps": "确定合适标准与后续步骤",
+        "Swiss-Invest — Legal & Investment Advisory": "Swiss-Invest — 法律与投资咨询",
+        "Request an appointment": "预约会面",
+        "Precision. Discretion. Lasting value. An independent Swiss legal & investment advisory firm based in Bulle, Canton de Fribourg. We unite rigorous legal counsel with curated, often off-market investment opportunity under a single roof — serving private clients, businesses, real estate actors, and public bodies. Every mandate is handled in strict confidence, with the long-term interests of the client at its centre.": "精准。审慎。恒久价值。一家位于弗里堡州布勒的独立瑞士法律与投资咨询事务所。我们将严谨的法律顾问与甄选的、往往非公开市场的投资机会集于一处——服务于私人客户、企业、房地产参与者及公共机构。每项委托均严格保密处理，并始终以客户的长远利益为核心。",
+        "CONSULTATIONS": "咨询",
+        "Legal · Mon–Thu 16:30–18:00": "法律 · 周一至周四 16:30–18:00",
+        "Investment · By appointment": "投资 · 预约制",
+        "OFFICE": "办公室",
+        "Canton de Fribourg, Switzerland": "瑞士弗里堡州",
+        "FREQUENTLY ASKED": "常见问题",
+        "Are all exchanges with the lawyer confidential?": "与律师的所有沟通是否保密？",
+        "Yes. All exchanges are covered by professional secrecy (attorney–client privilege) and handled with strict confidentiality in accordance with Swiss Bar rules and applicable law.": "是的。所有沟通均受职业保密（律师保密义务）保护，并依据瑞士律师公会规则及适用法律严格保密处理。",
+        "Can a dispute be resolved without going to court?": "纠纷能否不经法庭解决？",
+        "Where appropriate, the firm can negotiate, mediate, or facilitate conciliation on your behalf — before, during, or instead of formal court proceedings.": "在适当情况下，事务所可代表您进行谈判、调解或促成和解——可在正式诉讼之前、之中，或替代诉讼。",
+        "Do I need an appointment for a legal consultation?": "法律咨询是否需要预约？",
+        "Yes. All consultations are by appointment so the firm can review your situation in advance. Legal consultations are available Monday to Thursday, 16:30–18:00, at a fixed fee of CHF 30 for 30 minutes.": "需要。所有咨询均采取预约制，以便事务所事先了解您的情况。法律咨询于周一至周四 16:30–18:00 提供，固定费用为 30 瑞郎 / 30 分钟。",
+        "What investment opportunities does Swiss-Invest facilitate?": "Swiss-Invest 促成哪些投资机会？",
+        "Primarily transactions involving Swiss companies (acquisitions, sales, shareholdings), Swiss real estate (residential, commercial, development land), and alternative assets including fine art, collectible watches, jewellery, and private collections.": "主要涉及瑞士企业（收购、出售、股权）、瑞士房地产（住宅、商业、开发用地）以及另类资产，包括艺术品、收藏级腕表、珠宝及私人收藏。",
+        "Are the investment opportunities publicly available?": "这些投资机会是否公开？",
+        "Some are publicly available, while a significant number originate from private networks and off-market transactions accessible exclusively through the firm's established network.": "部分机会公开可得，但相当一部分来自私人网络与非公开市场交易，仅可通过本所成熟的网络获取。",
+        "Do you work with international investors?": "你们是否与国际投资者合作？",
+        "Yes. Swiss-Invest assists both Swiss and international investors and clients seeking legal or investment advisory services in Switzerland.": "是的。Swiss-Invest 协助瑞士及国际的投资者与客户在瑞士寻求法律或投资咨询服务。",
+        "© 2025 Swiss-Invest. All rights reserved.": "© 2025 Swiss-Invest. 版权所有。",
+        "AVOCAT AU BARREAU · FRIBOURG": "弗里堡州执业律师",
+        "ON BEARING": "航向锁定"
+      }
+    };
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf);
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('mousemove', this._onMove);
+    window.removeEventListener('touchmove', this._onMove);
+    window.removeEventListener('mouseout', this._onLeave);
+    document.removeEventListener('visibilitychange', this._onVis);
+    if (this._onDocClick) document.removeEventListener('click', this._onDocClick);
+    if (this._io) this._io.disconnect();
+    if (this._revIO) this._revIO.disconnect();
+    if (this.rootRef.current) this.rootRef.current.removeEventListener('mouseover', this._onOver, true);
+  }
+
+  applyTheme(dark) {
+    const r = this.rootRef.current;
+    if (r) r.setAttribute('data-theme', dark ? 'dark' : 'light');
+    this.dark = dark;
+    this.bgRGB = dark ? '12,15,20' : '251,251,251';
+    this.pRGB = dark ? '150,170,200' : '20,24,30';
+    if (this.bctx) this.drawChart(this.chartHX, this.chartHY);
+  }
+
+  toggleTheme = () => {
+    const d = !this.state.dark;
+    this.setState({ dark: d });
+    this.applyTheme(d);
+  };
+
+  setLang = (lang) => {
+    try { localStorage.setItem('xr_lang', lang); } catch (e) {}
+    this.closeLangMenu();
+    this.translateAll(lang);
+    this.setState({ lang: lang });
+  };
+  langEN = () => this.setLang('en');
+  langFR = () => this.setLang('fr');
+  langZH = () => this.setLang('zh');
+
+  resize() {
+    const bc = this.chartRef.current;
+    const r = bc.getBoundingClientRect();
+    this.W = r.width; this.H = r.height;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    bc.width = this.W * this.dpr;
+    bc.height = this.H * this.dpr;
+    this.bctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    this.roses = this.roseDefs.map((d) => ({ x: d.nx * this.W, y: d.ny * this.H }));
+    this.drawChart(this.chartHX, this.chartHY);
+  }
+
+  drawChart(hx, hy) {
+    const c = this.bctx;
+    if (!c) return;
+    c.clearRect(0, 0, this.W, this.H);
+    const ink = this.dark ? '150,170,200' : '20,24,30';
+    const L = Math.hypot(this.W, this.H);
+
+    // graticule
+    const G = Math.max(132, this.W / 9);
+    c.lineWidth = 1;
+    c.strokeStyle = `rgba(${ink},0.045)`;
+    c.beginPath();
+    for (let x = G; x < this.W; x += G) { c.moveTo(x, 0); c.lineTo(x, this.H); }
+    for (let y = G; y < this.H; y += G) { c.moveTo(0, y); c.lineTo(this.W, y); }
+    c.stroke();
+
+    // neatline (double border)
+    c.strokeStyle = `rgba(${ink},0.10)`;
+    c.strokeRect(28, 28, this.W - 56, this.H - 56);
+    c.strokeStyle = `rgba(${ink},0.06)`;
+    c.strokeRect(34, 34, this.W - 68, this.H - 68);
+
+    // compass roses + radiating rhumb lines
+    const accent = this.props.accent || '#E0BC63';
+    for (const rose of this.roses) {
+      let glow = 0;
+      if (hx != null && hy != null) {
+        const d = Math.hypot(rose.x - hx, rose.y - hy);
+        glow = Math.max(0, 1 - d / 360);
+      }
+      // 16-wind rhumb rays, drawn full-sheet so they crisscross
+      c.lineWidth = 1;
+      c.strokeStyle = `rgba(${ink},${(0.048 + glow * 0.13).toFixed(3)})`;
+      c.beginPath();
+      for (let i = 0; i < 16; i++) {
+        const a = i * Math.PI / 8;
+        c.moveTo(rose.x, rose.y);
+        c.lineTo(rose.x + Math.cos(a) * L, rose.y + Math.sin(a) * L);
+      }
+      c.stroke();
+      // wind circles
+      c.strokeStyle = `rgba(${ink},${(0.07 + glow * 0.12).toFixed(3)})`;
+      c.beginPath(); c.arc(rose.x, rose.y, 56, 0, 6.283); c.stroke();
+      c.beginPath(); c.arc(rose.x, rose.y, 31, 0, 6.283); c.stroke();
+      // 8-point star (accent) — lifts as the cursor nears
+      this.drawStar(c, rose.x, rose.y, 31, accent, 0.16 + glow * 0.5);
+      // hub
+      c.fillStyle = accent;
+      c.globalAlpha = 0.32 + glow * 0.5;
+      c.beginPath(); c.arc(rose.x, rose.y, 2.4, 0, 6.283); c.fill();
+      c.globalAlpha = 1;
+    }
+  }
+
+  drawStar(c, cx, cy, R, color, alpha) {
+    c.save();
+    c.globalAlpha = Math.min(1, alpha);
+    c.fillStyle = color;
+    const inner = R * 0.17;
+    for (let i = 0; i < 8; i++) {
+      const a = i * Math.PI / 4;
+      c.beginPath();
+      c.moveTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R);
+      c.lineTo(cx + Math.cos(a + Math.PI / 8) * inner, cy + Math.sin(a + Math.PI / 8) * inner);
+      c.lineTo(cx + Math.cos(a - Math.PI / 8) * inner, cy + Math.sin(a - Math.PI / 8) * inner);
+      c.closePath();
+      c.fill();
+    }
+    c.restore();
+  }
+
+  lerpAngle(a, b, t) {
+    let d = b - a;
+    while (d > Math.PI) d -= 2 * Math.PI;
+    while (d < -Math.PI) d += 2 * Math.PI;
+    return a + d * t;
+  }
+
+  updateNeedle(clientX, clientY) {
+    const nd = this.needleRef.current;
+    if (!nd || !nd.parentElement) return;
+    const ring = nd.parentElement.getBoundingClientRect();
+    const cx = ring.left + ring.width / 2;
+    const cy = ring.top + ring.height / 2;
+    const deg = Math.atan2(clientY - cy, clientX - cx) * 180 / Math.PI;
+    nd.style.transform = `translate(-50%,-50%) rotate(${deg + 90}deg)`;
+  }
+
+  setCursorMode(mode) {
+    if (this.cur.mode === mode) return;
+    this.cur.mode = mode;
+    const ring = this.cRingRef.current, bear = this.cBearingRef.current;
+    if (!ring) return;
+    if (mode === 'lock') {
+      ring.style.width = '24px'; ring.style.height = '24px'; ring.style.margin = '-12px 0 0 -12px'; ring.style.opacity = '1';
+      if (bear) bear.style.opacity = '1';
+    } else if (mode === 'text') {
+      ring.style.width = '36px'; ring.style.height = '36px'; ring.style.margin = '-18px 0 0 -18px'; ring.style.opacity = '0.3';
+      if (bear) bear.style.opacity = '0';
+    } else {
+      ring.style.width = '36px'; ring.style.height = '36px'; ring.style.margin = '-18px 0 0 -18px'; ring.style.opacity = '1';
+      if (bear) bear.style.opacity = '0';
+    }
+  }
+
+  updateActiveNav() {
+    if (!this.navTabs || !this.navTabs.length) return;
+    const vh = window.innerHeight, line = vh * 0.32;
+    let best = null, bestD = Infinity;
+    for (const t of this.navTabs) {
+      const r = t.section.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) continue;
+      const d = (r.top <= line && r.bottom >= line) ? 0 : Math.min(Math.abs(r.top - line), Math.abs(r.bottom - line));
+      if (d < bestD) { bestD = d; best = t; }
+    }
+    if (best === this.activeTab) return;
+    if (this.activeTab) {
+      this.activeTab.el.style.borderColor = 'transparent';
+      this.activeTab.el.style.backgroundColor = 'transparent';
+      this.activeTab.el.style.color = '';
+    }
+    this.activeTab = best;
+    if (best) {
+      best.el.style.borderColor = 'color-mix(in srgb, var(--accent) 55%, transparent)';
+      best.el.style.backgroundColor = 'color-mix(in srgb, var(--accent) 14%, transparent)';
+      best.el.style.color = 'var(--fg)';
+    }
+  }
+
+  updateRise() {
+    if (!this.riseEls) return;
+    const now = ((window.performance && performance.now) ? performance.now() : Date.now()) - this.riseStart;
+    const dur = 680;
+    let allDone = true;
+    for (const r of this.riseEls) {
+      let t = (now - r.delay) / dur;
+      if (t < 0) { allDone = false; r.el.style.opacity = '0'; r.el.style.transform = 'translateY(24px)'; continue; }
+      if (t < 1) allDone = false; else t = 1;
+      const e = t * t * (3 - 2 * t);
+      r.el.style.opacity = e.toFixed(3);
+      r.el.style.transform = 'translateY(' + ((1 - e) * 24).toFixed(1) + 'px)';
+    }
+    if (allDone) { this.riseEls.forEach((r) => { r.el.style.willChange = 'auto'; }); this.riseEls = null; }
+  }
+
+  updateReveals() {
+    if (!this.revealEls || this.reduced) return;
+    const vh = window.innerHeight;
+    const dist = this.revealDist();
+    const now = (window.performance && performance.now) ? performance.now() : Date.now();
+    const intro = Math.min(1, (now - this.revealStart) / 900);
+    for (const r of this.revealEls) {
+      const rect = r.el.getBoundingClientRect();
+      const headPad = 110; // fade out by the header line, not underneath it
+      let enter = (vh - rect.top) / (vh * 0.62); if (enter < 0) enter = 0; else if (enter > 1) enter = 1;
+      let exit = (rect.bottom - headPad) / (vh * 0.42); if (exit < 0) exit = 0; else if (exit > 1) exit = 1;
+      let p = (enter < exit ? enter : exit) * intro;
+      const e = p * p * (3 - 2 * p);
+      r.el.style.opacity = e.toFixed(3);
+      let tx, ty;
+      if (exit < enter) {
+        // leaving toward the header: drift up SLOWER than the scroll (parallax lag), then fade
+        const driftSpan = vh * 0.78;
+        let drift = (rect.bottom - headPad) / driftSpan; if (drift < 0) drift = 0; else if (drift > 1) drift = 1;
+        const de = drift * drift * (3 - 2 * drift);
+        tx = 0;
+        ty = (1 - de) * 72;            // held lower than scroll → appears to rise slowly
+        // hold opacity, then fade only in the final stretch near the header
+        let fade = drift / 0.34; if (fade > 1) fade = 1;
+        const fe = fade * fade * (3 - 2 * fade);
+        r.el.style.opacity = (fe * intro).toFixed(3);
+      } else {
+        // entering from the side
+        tx = r.sx * dist * (1 - e);
+        ty = r.sy * 40 * (1 - e);
+      }
+      r.el.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px,0)';
+    }
+  }
+
+  updateCursor() {
+    const el = this.cursorRef.current;
+    if (!el) return;
+    const cu = this.cur;
+    const nx = cu.x + (this.mouse.clientX - cu.x) * 0.2;
+    const ny = cu.y + (this.mouse.clientY - cu.y) * 0.2;
+    const dx = nx - cu.x, dy = ny - cu.y;
+    cu.x = nx; cu.y = ny;
+    el.style.transform = `translate(${nx}px, ${ny}px)`;
+    if (Math.hypot(dx, dy) > 0.45) {
+      cu.heading = this.lerpAngle(cu.heading, Math.atan2(dy, dx), 0.25);
+      const deg = cu.heading * 180 / Math.PI;
+      if (this.cNeedleRef.current) this.cNeedleRef.current.style.transform = `rotate(${deg + 90}deg)`;
+      if (cu.mode === 'lock' && this.cBearingRef.current) {
+        const b = ((deg + 90) % 360 + 360) % 360;
+        this.cBearingRef.current.textContent = String(Math.round(b)).padStart(3, '0') + '°';
+      }
+    }
+  }
+
+  loop() {
+    if (this.reduced) { this.updateCursor(); this.raf = requestAnimationFrame(this.loop); return; }
+
+    // throttled chart repaint for the cursor-driven rose glow
+    if (this.chartDirty) {
+      const now = (window.performance && performance.now) ? performance.now() : Date.now();
+      if (now - this.lastChartDraw > 32) {
+        this.drawChart(this.chartHX, this.chartHY);
+        this.lastChartDraw = now;
+        this.chartDirty = false;
+      }
+    }
+
+    this.updateRise();
+    this.updateActiveNav();
+    this.updateReveals();
+    this.updateCursor();
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
+  renderVals() {
+    return {
+      toggleTheme: this.toggleTheme,
+      langEN: this.langEN,
+      langFR: this.langFR,
+      langZH: this.langZH,
+      toggleLangMenu: this.toggleLangMenu,
+      chartRef: this.chartRef,
+      rootRef: this.rootRef,
+      needleRef: this.needleRef,
+      cursorRef: this.cursorRef,
+      cRingRef: this.cRingRef,
+      cNeedleRef: this.cNeedleRef,
+      cBearingRef: this.cBearingRef,
+    };
+  }
+}
+</script>
+</body>
+</html>
